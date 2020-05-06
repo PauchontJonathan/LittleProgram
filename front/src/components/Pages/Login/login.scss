@@ -1,0 +1,79 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  &-title {
+    align-self: flex-start;
+    margin-top: 10rem;
+    padding-bottom: 10px;
+    width: 10em;
+    text-align: left;
+    font-size: 3rem;
+    margin-bottom: 10rem;
+    border-bottom: thin solid;
+    animation: rightToLeft 1s ease;
+  }
+  &-form {
+    position: relative;
+    display: flex;
+    padding: 5rem;
+    box-shadow: 10px 10px ;
+    flex-direction: column;
+    width: 50%;
+    border: solid 1px;
+    border-radius: 50px;
+    align-self: center;
+    &-input {
+      margin: 1em;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      border: none;
+      border-bottom: solid !important;
+      padding: 1em;
+      &:focus {
+        border-bottom-color: rgb(255, 0, 0) !important;
+        background-color: rgb(238, 237, 237);
+      }
+      &-password {
+        border: none;
+        width: 25%;
+        align-self: flex-end;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 1s ease;
+        &:hover {
+          text-decoration: underline;
+          transition: 1s ease;
+          background-color: darken(rgb(255, 0, 0), 100%);
+          color: #fff;
+        }
+      }
+    }
+    &-register {
+      position: absolute;
+      top: 1%;
+      right: 10%;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &-title {
+      text-transform: uppercase;
+      text-decoration: underline;
+      font-size: 2.5rem;
+    }
+  }
+}
+
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(250%);
+    border: none;
+  }
+  100% {
+    transform : translateX(0);
+    border: none;
+  }
+}
