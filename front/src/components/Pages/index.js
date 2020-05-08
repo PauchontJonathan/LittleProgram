@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from 'src/components/Pages/Login';
+import Forms from 'src/components/Pages/Forms';
 import './pages.scss';
 
 const Pages = () => (
-  <>
-    <Login />
-  </>
+  <div className="pages">
+    <Forms />
+  </div>
 );
 
 export default Pages;
