@@ -1,8 +1,8 @@
 node_modules/
 dist/
+../back/
 .vs/
 .vs-code/
-
 .DS_Store
 Thumbs.db
 

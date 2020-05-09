@@ -43,11 +43,11 @@ const Forms = () => {
       setPasswordConfirmBoolean(false);
       console.log(nicknameRegisterValue);
       console.log(passwordRegisterValue);
-      axios.post('http://localhost:8000/api/v1/users', { nickname: nicknameRegisterValue, password: passwordRegisterValue })
+      axios.post('http://localhost:8000/api/v1/users/register', { nickname: nicknameRegisterValue, password: passwordRegisterValue })
         .then(res => {
           console.log(res);
         }).catch(err => {
-          console.log(err);
+          console.log(err.response.data);
         });
     }
   };
