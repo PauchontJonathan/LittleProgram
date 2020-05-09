@@ -4,22 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const api = "/api/v1/";
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
-
-//Middlewares
-const usersRoute = require('./routes/users');
-
-app.use(`${api}users`, usersRoute)
-
-
+//Connection to DB
 mongoose.connect(
   process.env.DB_CONNECT,
   {useUnifiedTopology: true, useNewUrlParser: true},
@@ -30,6 +15,22 @@ mongoose.connect(
         console.log('it worked !');
     }
 });
+
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
+// Import Routes
+const usersRoute = require('./routes/users');
+
+//Middlewares
+app.use(`${api}users`, usersRoute)
 
 
 //Listening to port 8000
