@@ -52,8 +52,6 @@ const Forms = () => {
       setEmptyValue(false);
       setEmptyValue(false);
       setPasswordConfirmBoolean(false);
-      console.log(nicknameRegisterValue);
-      console.log(passwordRegisterValue);
       axios.post('http://localhost:8000/api/v1/users/register', { nickname: nicknameRegisterValue, password: passwordRegisterValue })
         .then(res => {
           const { message } = res.data;
