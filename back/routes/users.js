@@ -1,7 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const { registerValidation } = require('../validation');
+const jwt = require('jsonwebtoken');
+const { registerValidation, loginValidation } = require('../validation');
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.post('/register', async (req, res) => {
 
   //Validate datas
   const  err  = registerValidation(req.body);
+  
   const errorMessage = err.error;
   
   if (errorMessage) return res.status(400).send({ errorMessage });
@@ -37,6 +39,33 @@ router.post('/register', async (req, res) => {
         res.status(400).send(err);
       }
   });
+});
+
+//Route for login one user
+router.post('/login', async (req, res) => {
+
+  //Validate datas
+  const  err  = registerValidation(req.body);
+  const errorMessage = err.error;
+  
+  if (errorMessage) return res.status(400).send({ errorMessage });
+
+  //Stock datas from front into const
+  const currentNickname = req.body.nickname;
+
+  //comparing user datas with datas in bdd
+  const user = await User.findOne({ nickname: currentNickname });
+  if(!user) return res.status(400).send({error: 'Le mot de passe ou le pseudo est incorrect !'});
+
+
+  const currentPassword = req.body.password;
+  
+  const passwordExist = await bcrypt.compare(currentPassword, user.password);
+  if(!passwordExist) return res.status(400).send({error: 'Le mot de passe ou le pseudo est incorrect !'});
+
+  //Create and assign a token
+  const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
+  res.header('bearer', token).status(200).send(token);
 });
 
 module.exports = router;
