@@ -14,6 +14,7 @@ router.post('/register', async (req, res) => {
   const  err  = registerValidation(req.body);
   
   const errorMessage = err.error;
+  console.log(errorMessage);
   
   if (errorMessage) return res.status(400).send({ errorMessage });
 
@@ -22,8 +23,15 @@ router.post('/register', async (req, res) => {
    const newPassword = req.body.password;
 
   //Checking if the user is already in the db
+  const nickNameMessage = {
+    'details': [
+      {
+        'message': 'Le pseudo existe déjà !'
+      }
+    ]
+  };
   const nicknameExist = await User.findOne({ nickname: newNickname });
-  if (nicknameExist) return res.status(400).send({ error: 'le pseudo existe déjà !' });
+  if (nicknameExist) return res.status(400).send({ errorMessage: nickNameMessage });
 
   //Hashing password
   bcrypt.hash(newPassword, 10, (err, hash) => {
@@ -54,14 +62,29 @@ router.post('/login', async (req, res) => {
   const currentNickname = req.body.nickname;
 
   //comparing user datas with datas in bdd
+  const nickNameMessage = {
+    'details': [
+      {
+        'message': 'Le mot de passe ou le pseudo est incorrect !'
+      }
+    ]
+  };
   const user = await User.findOne({ nickname: currentNickname });
-  if(!user) return res.status(400).send({error: 'Le mot de passe ou le pseudo est incorrect !'});
+  if(!user) return res.status(400).send({errorMessage: nickNameMessage});
 
 
   const currentPassword = req.body.password;
+
+  const passwordMessage = {
+    'details': [
+      {
+        'message': 'Le mot de passe ou le pseudo est incorrect !'
+      }
+    ]
+  };
   
   const passwordExist = await bcrypt.compare(currentPassword, user.password);
-  if(!passwordExist) return res.status(400).send({error: 'Le mot de passe ou le pseudo est incorrect !'});
+  if(!passwordExist) return res.status(400).send({errorMessage: passwordMessage});
 
   //Create and assign a token
   const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
