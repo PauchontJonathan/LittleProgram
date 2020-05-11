@@ -1,5 +1,7 @@
 // == Import : npm
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { UserProvider } from 'src/reducers/user';
 import { render } from 'react-dom';
 
 
@@ -12,7 +14,13 @@ import App from 'src/components/App';
 
 // == Render
 // 1. Le composant racine (celui qui contient l'ensemble de l'app)
-const rootComponent = <App />;
+const rootComponent = (
+  <UserProvider>
+    <Router>
+      <App />
+    </Router>
+  </UserProvider>
+);
 
 // 2. La cible du DOM (là où la structure doit prendre vie dans le DOM)
 const target = document.getElementById('root');
