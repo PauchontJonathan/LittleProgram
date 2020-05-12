@@ -1,0 +1,44 @@
+.desktop {
+  background: linear-gradient(rgb(104, 104, 104), #000);
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  &-taskbar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 0.5rem;
+    bottom: 0;
+    width: 100%;
+    &-date {
+      display: flex;
+      flex-direction: row;
+      border-left: grey solid thin;
+      padding-left: 1rem;
+      margin: 0 1em;
+      &-hour {
+        align-self: center;
+      }
+    }
+    &-user{
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      &-icon {
+        border-right: grey solid thin;
+        height: 100%;
+        font-size: 2em !important;
+        &:hover {
+          cursor: pointer;
+          border-radius: 10px;
+          background-color: rgba(000,000,000, 0.2);
+        }
+      }
+    }
+  }
+}

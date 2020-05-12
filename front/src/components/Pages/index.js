@@ -8,11 +8,11 @@ import './pages.scss';
 const Pages = () => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(UserContext);
-  const currentToken = localStorage.getItem('token');
   const { token } = state;
   if (token) {
     localStorage.setItem('token', token);
   }
+  const currentToken = localStorage.getItem('token');
   return (
     <div className="pages">
       <Route exact path="/">
