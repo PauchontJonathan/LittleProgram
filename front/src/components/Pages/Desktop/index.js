@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Particles from 'react-particles-js';
-import AppsIcon from '@material-ui/icons/Apps';
+import Taskbar from 'src/components/Pages/Desktop/Taskbar';
 import './desktop.scss';
 
 const Desktop = () => {
-  const hour = new Date().getHours();
-  const minutes = new Date().getMinutes();
-  const currentDate = `${hour}:${minutes}`;
-  const [ count, setCount ] = useState(0);
-  const [date, setDate ] = useState(currentDate);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setCount(count + 1);
-      setDate(currentDate);
-    }, 1000);
-  },[count])
   return (
     <>
       <Particles
@@ -82,14 +70,7 @@ const Desktop = () => {
           },
         }}
       />
-      <div className="desktop-taskbar">
-        <div className="desktop-taskbar-user">
-          <AppsIcon className="desktop-taskbar-user-icon" />
-        </div>
-        <div className="desktop-taskbar-date">
-          <p className="desktop-taskbar-date-hour">{date}</p>
-        </div>
-      </div>
+      <Taskbar />
     </>
   );
 };

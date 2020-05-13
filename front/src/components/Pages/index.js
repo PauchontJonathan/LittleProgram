@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { UserContext } from 'src/reducers/user';
 import Forms from 'src/components/Pages/Forms';
 import Desktop from 'src/components/Pages/Desktop';
+import { DesktopProvider } from 'src/reducers/desktop';
 import './pages.scss';
 
 const Pages = () => {
@@ -18,9 +19,11 @@ const Pages = () => {
       <Route exact path="/">
         {currentToken ? <Redirect to="/desktop" /> : <Forms />}
       </Route>
-      <Route exact path="/desktop">
-        {!currentToken ? <Redirect to="/" /> : <Desktop />}
-      </Route>
+      <DesktopProvider>
+        <Route exact path="/desktop">
+          {!currentToken ? <Redirect to="/" /> : <Desktop />}
+        </Route>
+      </DesktopProvider>
     </div>
   );
 };

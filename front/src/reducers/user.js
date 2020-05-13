@@ -8,6 +8,7 @@ const userInitialState = {
   token: null,
 };
 
+const LOGOUT = 'LOGOUT';
 const GET_TOKEN = 'GET_TOKEN';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -16,11 +17,23 @@ export const addTokenToState = (currentToken) => ({
   currentToken,
 });
 
+export const logout = () => ({
+  type: LOGOUT,
+});
+
 const userReducer = (state, action) => {
   switch (action.type) {
-    case GET_TOKEN: 
-      return {...state, token: action.currentToken};
-    default: 
+    case GET_TOKEN: {
+      localStorage.setItem('token', action.currentToken);
+      const newToken = localStorage.getItem('token');
+      return {...state, token: newToken};
+    }
+    case LOGOUT: {
+      localStorage.clear();
+      const tokenState = localStorage.getItem('token');
+      return { ...state, token: tokenState }
+    }
+    default:
       return state;
   }
 };

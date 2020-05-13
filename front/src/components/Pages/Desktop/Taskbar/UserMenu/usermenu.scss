@@ -1,0 +1,34 @@
+.desktop-taskbar-usermenu {
+  background: #fff;
+  position: absolute;
+  bottom: 150%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 1em;
+  animation-name: downToUp;
+  width: 20rem;
+  animation-duration: 0.04s;
+  &-icons {
+    font-size: 3rem !important;
+    &:hover {
+      cursor: pointer;
+      border-radius: 10px;
+      background-color: rgba(000,000,000, 0.2);
+    }
+  }
+}
+@media(max-width: 400px) {
+  .desktop-taskbar-usermenu {
+    width: 15rem !important;
+  }
+}
+
+@keyframes downToUp{
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
