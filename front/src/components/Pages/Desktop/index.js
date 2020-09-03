@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import Particles from 'react-particles-js';
 import Taskbar from 'src/components/Pages/Desktop/Taskbar';
-import Window from 'src/components/Pages/Desktop/Window';
+import ProfilWindow from 'src/components/Pages/Desktop/ProfilWindow';
 import { DesktopContext } from 'src/reducers/desktop';
 import './desktop.scss';
 
 const Desktop = () => {
   const [windowState, windowDispatch ] = useContext(DesktopContext);
-  const  { isOpenWindow } = windowState;
+  const  { isOpenProfilWindow } = windowState;
   return (
     <>
       <Particles
@@ -74,7 +74,7 @@ const Desktop = () => {
           },
         }}
       />
-      {isOpenWindow && <Window />}
+      {isOpenProfilWindow && <ProfilWindow />}
       <Taskbar />
     </>
   );
