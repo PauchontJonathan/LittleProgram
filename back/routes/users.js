@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { registerValidation, loginValidation } = require('../validation');
+const { restart } = require('nodemon');
 
 const router = express.Router();
 
@@ -89,6 +90,27 @@ router.post('/login', async (req, res) => {
   //Create and assign a token
   const token = jwt.sign({_id: user._id}, process.env.SECRET_TOKEN);
   res.header('authorization', token).status(200).send({token: token});
+});
+
+//route to send nickname for the user
+router.post('/user', async (req,res) => {
+  const currentToken = req.body.token;
+  console.log(currentToken);
+
+  const decodedToken = jwt.decode(currentToken);
+  const userId = decodedToken._id;
+  const user = await User.findById(userId);
+  
+  const error = {
+    'details': [
+      {
+        'message': "L'utilisateur n'a pas été trouvé !"
+      }
+    ]
+  };
+  if(!user) return res.status(400).send({errorMessage: error })
+  const { nickname } = user;
+  res.status(200).send({ nickname });
 });
 
 module.exports = router;
