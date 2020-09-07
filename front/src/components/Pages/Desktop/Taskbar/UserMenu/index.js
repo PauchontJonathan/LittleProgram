@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
+import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { DesktopContext, handleProfilWindow, closeProfilReducer } from 'src/reducers/desktop';
-import { UserContext, logout } from 'src/reducers/user';
+import { UserContext, logout, getNickname } from 'src/reducers/user';
 
 import './usermenu.scss';
 
@@ -16,6 +17,14 @@ const UserMenu = () => {
   };
 
   const handleProfilWindowOnClick = () => {
+    const { token } = state;
+    axios.post('http://localhost:8000/api/v1/users/user', { token })
+      .then((res) => {
+        console.log(res);
+        const { nickname } = res.data;
+        console.log(nickname);
+        dispatch(getNickname(nickname));
+      });
     windowDispatch(handleProfilWindow());
     if (isReduceProfil === true) {
       windowDispatch(closeProfilReducer());

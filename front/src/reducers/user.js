@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useReducer, createContext } from 'react';
+import axios from 'axios';
 
 export const UserContext = createContext();
 
@@ -10,6 +11,7 @@ const userInitialState = {
 
 const LOGOUT = 'LOGOUT';
 const GET_TOKEN = 'GET_TOKEN';
+const GET_NICKNAME= 'GET_NICKNAME';
 
 // eslint-disable-next-line import/prefer-default-export
 export const addTokenToState = (currentToken) => ({
@@ -19,6 +21,11 @@ export const addTokenToState = (currentToken) => ({
 
 export const logout = () => ({
   type: LOGOUT,
+});
+
+export const getNickname = (currentNickname) => ({
+  type: GET_NICKNAME,
+  currentNickname,
 });
 
 const userReducer = (state, action) => {
@@ -31,8 +38,10 @@ const userReducer = (state, action) => {
     case LOGOUT: {
       localStorage.clear();
       const tokenState = localStorage.getItem('token');
-      return { ...state, token: tokenState }
+      return { ...state, token: tokenState, nickname: null };
     }
+    case GET_NICKNAME: 
+      return { ...state, nickname: action.currentNickname }
     default:
       return state;
   }

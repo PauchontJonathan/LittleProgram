@@ -27,7 +27,7 @@ const Desktop = () => {
               opacity: 0.5,
             },
             move: {
-              speed: 0.3,
+              speed: 0.1,
             },
             opacity: {
               anim: {

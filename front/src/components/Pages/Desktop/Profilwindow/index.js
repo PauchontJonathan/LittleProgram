@@ -4,13 +4,16 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
+import { UserContext } from 'src/reducers/user';
 import {DesktopContext, handleProfilWindow, reduceProfil } from 'src/reducers/desktop';
 import './window.scss';
 
 const ProfilWindow = () => {
-
+  const [ userState, userDispatch ] = useContext(UserContext);
   const [ state, dispatch ] = useContext(DesktopContext);
   const { isReduceProfil } = state;
+  const { nickname } = userState;
+  console.log(nickname);
 
   const handleProfil = () => {
     dispatch(handleProfilWindow());
@@ -36,7 +39,7 @@ const ProfilWindow = () => {
           <Avatar className="desktop-window-container-avatar"/>
           <h1 className="desktop-window-container-title">Mes informations</h1>
           <div className="desktop-window-container-infos">
-            <p className="desktop-window-container-infos-nickname">pseudo: Lunastra</p>
+            <p className="desktop-window-container-infos-nickname">pseudo: {nickname}</p>
             <input className="desktop-window-container-infos-update" type="button" value="Modifier"/>
           </div>
           <div className="desktop-window-container-infos">

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { UserContext } from 'src/reducers/user';
+import { UserContext, addTokenToState } from 'src/reducers/user';
 import Forms from 'src/components/Pages/Forms';
 import Desktop from 'src/components/Pages/Desktop';
 import { DesktopProvider } from 'src/reducers/desktop';
@@ -10,10 +10,12 @@ const Pages = () => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useContext(UserContext);
   const { token } = state;
+  const currentToken = localStorage.getItem('token');
   if (token) {
     localStorage.setItem('token', token);
+  } else if (currentToken) {
+    dispatch(addTokenToState(currentToken));
   }
-  const currentToken = localStorage.getItem('token');
   return (
     <div className="pages">
       <Route exact path="/">
