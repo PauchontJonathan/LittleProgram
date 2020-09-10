@@ -4,7 +4,7 @@ import React, { useReducer, createContext } from 'react';
 export const DesktopContext = createContext();
 
 const desktopInitialState = {
-  isOpenProfilWindow: false,
+  isOpenProfilWindow: true,
   isOpenMenu: false,
   isReduceProfil: false,
 };
