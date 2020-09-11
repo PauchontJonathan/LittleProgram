@@ -46,7 +46,6 @@ const Forms = () => {
   // handle nickname value on Change for register
   const handleNicknameRegister = (evt) => {
     const newNickname = evt.target.value;
-    console.log(newNickname);
     setNicknameRegisterValue(newNickname);
   };
 

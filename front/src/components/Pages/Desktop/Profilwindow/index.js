@@ -1,19 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Draggable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import { UserContext } from 'src/reducers/user';
-import {DesktopContext, handleProfilWindow, reduceProfil } from 'src/reducers/desktop';
+import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword } from 'src/reducers/desktop';
 import './window.scss';
 
 const ProfilWindow = () => {
   const [ userState, userDispatch ] = useContext(UserContext);
   const [ state, dispatch ] = useContext(DesktopContext);
-  const { isReduceProfil } = state;
+  const { isReduceProfil, isUpdateNickname, isUpdatePassword } = state;
   const { nickname } = userState;
-  console.log(nickname);
+  const [ newNickname, setNewNickname ] = useState('');
+  const [ newPassword, setNewPassword ] = useState('');
 
   const handleProfil = () => {
     dispatch(handleProfilWindow());
@@ -21,6 +22,23 @@ const ProfilWindow = () => {
 
   const handleReduceProfil = () => {
     dispatch(reduceProfil());
+  };
+
+  const handleFormNickname = () => {
+    dispatch(handleUpdateNickname());
+  };
+
+  const handleFormPassword = () => {
+    dispatch(handleUpdatePassword());
+  };
+
+  const handleNewNickname = (evt) => {
+    const currentNickname = evt.target.value;
+    setNewNickname(currentNickname);
+  };
+  const handleNewPassword = (evt) => {
+    const currentPassword = evt.target.value;
+    setNewPassword(currentPassword);
   };
 
   const hidden = classNames('desktop-window', { 'desktop-window-hidden': isReduceProfil });
@@ -38,14 +56,32 @@ const ProfilWindow = () => {
         <div className="desktop-window-container">
           <Avatar className="desktop-window-container-avatar"/>
           <h1 className="desktop-window-container-title">Mes informations</h1>
-          <div className="desktop-window-container-infos">
-            <p className="desktop-window-container-infos-nickname">pseudo: {nickname}</p>
-            <input className="desktop-window-container-infos-update" type="button" value="Modifier"/>
-          </div>
-          <div className="desktop-window-container-infos">
-            <p className="desktop-window-container-infos-password">mot-de-passe: *********</p>
-            <input className="desktop-window-container-infos-update" type="button" value="Modifier"/>
-          </div>
+          { !isUpdateNickname && (
+            <>
+              <div className="desktop-window-container-infos">
+                <p className="desktop-window-container-infos-nickname">Pseudo: {nickname}</p>
+                <input className="desktop-window-container-infos-update" type="button" value="Modifier" onClick={handleFormNickname} />
+              </div>
+            </>
+          )}
+          { isUpdateNickname && (
+            <form method="post" className="desktop-window-container-infos">
+              <input type="text" className="desktop-window-container-infos-input" name="nickname" placeholder="pseudo" value={newNickname} onChange={handleNewNickname} />
+              <input type="submit" className="desktop-window-container-infos-update" value="Valider"/>
+            </form>
+          )}
+          { !isUpdatePassword && (
+            <div className="desktop-window-container-infos">
+              <p className="desktop-window-container-infos-password">Mot-de-passe: *********</p>
+              <input className="desktop-window-container-infos-update" type="button" value="Modifier" onClick={handleFormPassword} />
+            </div>
+          )}
+          { isUpdatePassword && (
+            <form method="post" className="desktop-window-container-infos">
+              <input type="text" className="desktop-window-container-infos-input" name="password" placeholder="mot-de-passe" value={newPassword} onChange={handleNewPassword} />
+              <input type="submit" className="desktop-window-container-infos-update" value="Valider"/>
+            </form>
+          )}
         </div>
       </div>
     </Draggable>

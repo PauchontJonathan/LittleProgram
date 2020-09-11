@@ -7,6 +7,8 @@ const desktopInitialState = {
   isOpenProfilWindow: true,
   isOpenMenu: false,
   isReduceProfil: false,
+  isUpdateNickname: false,
+  isUpdatePassword: false,
 };
 
 const HANDLE_MENU = 'HANDLE_MENU';
@@ -14,6 +16,8 @@ const CLOSE_MENU = 'CLOSE_MENU';
 const HANDLE_PROFIL_WINDOW = 'HANDLE_WINDOW';
 const REDUCE_PROFIL = 'REDUCE_PROFIL';
 const CLOSE_PROFIL_REDUCER = 'CLOSE_PROFIL_REDUCER';
+const HANDLE_UPDATE_NICKNAME = 'HANDLE_UPDATE_NICKNAME';
+const HANDLE_UPDATE_PASSWORD = 'HANDLE_UPDATE_PASSWORD';
 
 export const handleMenu = () => ({
   type: HANDLE_MENU,
@@ -35,6 +39,14 @@ export const closeProfilReducer = () => ({
   type: CLOSE_PROFIL_REDUCER,
 });
 
+export const handleUpdateNickname = () => ({
+  type: HANDLE_UPDATE_NICKNAME,
+});
+
+export const handleUpdatePassword = () => ({
+  type: HANDLE_UPDATE_PASSWORD,
+});
+
 const desktopReducer = (state, actions) => {
   switch (actions.type) {
     case HANDLE_MENU:
@@ -47,6 +59,10 @@ const desktopReducer = (state, actions) => {
       return {...state, isReduceProfil: !state.isReduceProfil};
     case CLOSE_PROFIL_REDUCER:
       return {...state, isReduceProfil: false};
+    case HANDLE_UPDATE_NICKNAME:
+      return {...state, isUpdateNickname: !state.isUpdateNickname};
+    case HANDLE_UPDATE_PASSWORD:
+      return {...state, isUpdatePassword: !state.isUpdatePassword};
     default:
       return state;
   };

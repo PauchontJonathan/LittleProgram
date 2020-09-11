@@ -27,6 +27,7 @@ export const getNickname = (currentNickname) => ({
   currentNickname,
 });
 
+
 const userReducer = (state, action) => {
   switch (action.type) {
     case GET_TOKEN: {
