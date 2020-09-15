@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { registerValidation, loginValidation } = require('../validation');
+const { registerValidation, loginValidation, updateNicknameValidation } = require('../validation');
+const { getIdFromToken } = require('../functions/functions');
 const { restart } = require('nodemon');
 
 const router = express.Router();
@@ -95,10 +96,8 @@ router.post('/login', async (req, res) => {
 //route to send nickname for the user
 router.post('/user', async (req,res) => {
   const currentToken = req.body.token;
-  console.log(currentToken);
 
-  const decodedToken = jwt.decode(currentToken);
-  const userId = decodedToken._id;
+  const userId = getIdFromToken(currentToken);
   const user = await User.findById(userId);
   
   const error = {
@@ -112,5 +111,43 @@ router.post('/user', async (req,res) => {
   const { nickname } = user;
   res.status(200).send({ nickname });
 });
+
+//route for update users nickname information
+router.post('/user/update/nickname', async (req,res) => {
+    //Validate datas
+    const  err  = updateNicknameValidation(req.body);
+    const errorMessage = err.error;
+    if (errorMessage) return res.status(400).send({ errorMessage });
+
+    const newNickname = req.body.nickname;
+    const currentToken = req.body.token;
+
+    const nickNameMessage = {
+      'details': [
+        {
+          'message': 'Le pseudo existe déjà !'
+        }
+      ]
+    };
+
+    const isNicknameExists = await User.findOne({ nickname: newNickname });
+    if(isNicknameExists) return res.status(400).send({ errorMessage: nickNameMessage });
+  
+    const userId = getIdFromToken(currentToken);
+    await User.findByIdAndUpdate(userId, { nickname: newNickname }, { new: true }, (err) => {
+      if(err) {
+        const error = {
+          'details': [
+            {
+              'message': "Echec lors de la modification !"
+            }
+          ]
+        };
+        res.status(400).send({ errorMessage: error });
+      } else {
+        res.status(200).send({ success: true });
+      }
+    });
+})
 
 module.exports = router;
