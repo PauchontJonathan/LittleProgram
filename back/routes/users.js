@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { registerValidation, loginValidation, updateNicknameValidation } = require('../validation');
+const { registerValidation, loginValidation, updateNicknameValidation, updatePasswordValidation } = require('../validation');
 const { getIdFromToken } = require('../functions/functions');
 const { restart } = require('nodemon');
 
@@ -147,6 +147,33 @@ router.post('/user/update/nickname', async (req,res) => {
       } else {
         res.status(200).send({ success: true });
       }
+    });
+
+    router.post('/user/update/password', async (req,res) => {
+      const  err  = updatePasswordValidation(req.body);
+      const errorMessage = err.error;
+      if (errorMessage) return res.status(400).send({ errorMessage });
+
+      const newPassword = req.body.password;
+      const currentToken = req.body.token;
+
+      const passwordMessage = {
+        'details': [
+          {
+            'message': 'Le mot-de-passe existe déjà !'
+          }
+        ]
+      };
+
+      const userId = getIdFromToken(currentToken);
+      const user = await User.findById(userId);
+
+      const { password }  = user;
+
+      const isSame = await bcrypt.compare( newPassword, password );
+      if (isSame) return res.status(400).status({ errorMessage: passwordMessage });
+
+      
     });
 })
 

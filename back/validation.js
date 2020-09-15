@@ -76,6 +76,8 @@ const updatePasswordValidation = (data) => {
         'string.min': 'Le mot-de-passe doit contenir 5 caractères au minimum !',
         'string.max': 'Le mot-de-passe doit contenir 999 caractères au maximum !'
       }),
+      token: Joi.string()
+      .required()
   });
   return schema.validate(data);
 };
