@@ -145,10 +145,11 @@ router.post('/user/update/nickname', async (req,res) => {
         };
         res.status(400).send({ errorMessage: error });
       } else {
-        res.status(200).send({ success: true });
+        res.status(200).send({ success: true, message: 'Pseudo modifié' });
       }
     });
 
+    //route for update the password
     router.post('/user/update/password', async (req,res) => {
       const  err  = updatePasswordValidation(req.body);
       const errorMessage = err.error;
@@ -173,7 +174,27 @@ router.post('/user/update/nickname', async (req,res) => {
       const isSame = await bcrypt.compare( newPassword, password );
       if (isSame) return res.status(400).status({ errorMessage: passwordMessage });
 
-      
+       await bcrypt.hash(newPassword, 10, async (err, hash) => {
+        try {
+           await User.findByIdAndUpdate(userId, { password: hash }, (err) => {
+            if (err) {
+              const error = {
+                'details': [
+                  {
+                    'message': "Echec lors de la modification !"
+                  }
+                ]
+              };
+              res.status(400).send({ errorMessage: error });
+            } else {
+              res.status(200).send({ success: true, message: 'Mot-de-passe modifié' });
+            }
+          });
+        } catch {
+          res.status(400).send(err);
+        }
+      });
+
     });
 })
 
