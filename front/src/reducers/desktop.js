@@ -17,7 +17,9 @@ const HANDLE_PROFIL_WINDOW = 'HANDLE_WINDOW';
 const REDUCE_PROFIL = 'REDUCE_PROFIL';
 const CLOSE_PROFIL_REDUCER = 'CLOSE_PROFIL_REDUCER';
 const HANDLE_UPDATE_NICKNAME = 'HANDLE_UPDATE_NICKNAME';
+const CLOSE_NICKNAME_UPDATE = 'CLOSE_NICKNAME_FORM';
 const HANDLE_UPDATE_PASSWORD = 'HANDLE_UPDATE_PASSWORD';
+const CLOSE_PASSWORD_UPDATE = 'CLOSE_PASSWORD_FORM';
 
 export const handleMenu = () => ({
   type: HANDLE_MENU,
@@ -43,8 +45,16 @@ export const handleUpdateNickname = () => ({
   type: HANDLE_UPDATE_NICKNAME,
 });
 
+export const closeNicknameUpdate = () => ({
+  type: CLOSE_NICKNAME_UPDATE,
+});
+
 export const handleUpdatePassword = () => ({
   type: HANDLE_UPDATE_PASSWORD,
+});
+
+export const closePasswordUpdate = () => ({
+  type: CLOSE_PASSWORD_UPDATE,
 });
 
 const desktopReducer = (state, actions) => {
@@ -63,6 +73,10 @@ const desktopReducer = (state, actions) => {
       return {...state, isUpdateNickname: !state.isUpdateNickname};
     case HANDLE_UPDATE_PASSWORD:
       return {...state, isUpdatePassword: !state.isUpdatePassword};
+    case CLOSE_NICKNAME_UPDATE:
+      return {...state, isUpdateNickname: false };
+    case CLOSE_PASSWORD_UPDATE:
+      return {...state, isUpdatePassword: false };
     default:
       return state;
   };
