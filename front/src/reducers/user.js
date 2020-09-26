@@ -10,7 +10,7 @@ const userInitialState = {
 
 const LOGOUT = 'LOGOUT';
 const GET_TOKEN = 'GET_TOKEN';
-const GET_NICKNAME= 'GET_NICKNAME';
+const SET_NICKNAME= 'SET_NICKNAME';
 
 // eslint-disable-next-line import/prefer-default-export
 export const addTokenToState = (currentToken) => ({
@@ -22,8 +22,8 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const getNickname = (currentNickname) => ({
-  type: GET_NICKNAME,
+export const setNickname = (currentNickname) => ({
+  type: SET_NICKNAME,
   currentNickname,
 });
 
@@ -40,7 +40,7 @@ const userReducer = (state, action) => {
       const tokenState = localStorage.getItem('token');
       return { ...state, token: tokenState, nickname: null };
     }
-    case GET_NICKNAME: 
+    case SET_NICKNAME: 
       return { ...state, nickname: action.currentNickname }
     default:
       return state;

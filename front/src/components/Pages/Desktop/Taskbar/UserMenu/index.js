@@ -3,7 +3,7 @@ import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { DesktopContext, handleProfilWindow, closeProfilReducer } from 'src/reducers/desktop';
-import { UserContext, logout, getNickname } from 'src/reducers/user';
+import { UserContext, logout, setNickname } from 'src/reducers/user';
 
 import './usermenu.scss';
 
@@ -23,7 +23,7 @@ const UserMenu = () => {
         console.log(res);
         const { nickname } = res.data;
         console.log(nickname);
-        dispatch(getNickname(nickname));
+        dispatch(setNickname(nickname));
       });
     windowDispatch(handleProfilWindow());
     if (isReduceProfil === true) {
