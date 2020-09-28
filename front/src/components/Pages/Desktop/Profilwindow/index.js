@@ -81,7 +81,7 @@ const ProfilWindow = () => {
 
   const handleNicknameSubmit = (evt) => {
     evt.preventDefault();
-    axios.post('http://localhost:8000/api/v1/users/user/update/nickname', { token, nickname: newNickname })
+    axios.put('http://localhost:8000/api/v1/users/user/update/nickname', { token, nickname: newNickname })
       .then((res) => {
         const { message } = res.data;
         if (message !== null) {
@@ -103,7 +103,7 @@ const ProfilWindow = () => {
 
   const handlePasswordSubmit = (evt) => {
     evt.preventDefault();
-    axios.post('http://localhost:8000/api/v1/users/user/update/password', { token, password: newPassword })
+    axios.put('http://localhost:8000/api/v1/users/user/update/password', { token, password: newPassword })
       .then((res) => {
         const { message } = res.data;
         if (message !== null) {
