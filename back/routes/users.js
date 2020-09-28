@@ -4,7 +4,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { registerValidation, loginValidation, updateNicknameValidation, updatePasswordValidation } = require('../validation');
 const { getIdFromToken } = require('../functions/functions');
-const { restart } = require('nodemon');
 
 const router = express.Router();
 
@@ -111,9 +110,56 @@ router.post('/user', async (req,res) => {
   const { nickname } = user;
   res.status(200).send({ nickname });
 });
+  //route for update the password
+  router.put('/user/update/password', async (req,res) => {
+    const  err  = updatePasswordValidation(req.body);
+    const errorMessage = err.error;
+    if (errorMessage) return res.status(400).send({ errorMessage });
+
+    const newPassword = req.body.password;
+    const currentToken = req.body.token;
+    console.log(currentToken);
+    const passwordMessage = {
+      'details': [
+        {
+          'message': 'Le mot-de-passe existe déjà !'
+        }
+      ]
+    };
+
+    const userId = getIdFromToken(currentToken);
+    const user = await User.findById(userId);
+
+    const { password }  = user;
+
+    const isSame = await bcrypt.compare( newPassword, password );
+    if (isSame) return res.status(400).status({ errorMessage: passwordMessage });
+
+      await bcrypt.hash(newPassword, 10, async (err, hash) => {
+      try {
+          await User.findByIdAndUpdate(userId, { password: hash }, (err) => {
+          if (err) {
+            const error = {
+              'details': [
+                {
+                  'message': "Echec lors de la modification !"
+                }
+              ]
+            };
+            res.status(400).send({ errorMessage: error });
+          } else {
+            res.status(200).send({ success: true, message: 'Mot-de-passe modifié' });
+          }
+        });
+      } catch {
+        res.status(400).send(err);
+      }
+    });
+
+  });
 
 //route for update users nickname information
-router.post('/user/update/nickname', async (req,res) => {
+router.put('/user/update/nickname', async (req,res) => {
     //Validate datas
     const  err  = updateNicknameValidation(req.body);
     const errorMessage = err.error;
@@ -147,54 +193,6 @@ router.post('/user/update/nickname', async (req,res) => {
       } else {
         res.status(200).send({ success: true, message: 'Pseudo modifié' });
       }
-    });
-
-    //route for update the password
-    router.post('/user/update/password', async (req,res) => {
-      const  err  = updatePasswordValidation(req.body);
-      const errorMessage = err.error;
-      if (errorMessage) return res.status(400).send({ errorMessage });
-
-      const newPassword = req.body.password;
-      const currentToken = req.body.token;
-
-      const passwordMessage = {
-        'details': [
-          {
-            'message': 'Le mot-de-passe existe déjà !'
-          }
-        ]
-      };
-
-      const userId = getIdFromToken(currentToken);
-      const user = await User.findById(userId);
-
-      const { password }  = user;
-
-      const isSame = await bcrypt.compare( newPassword, password );
-      if (isSame) return res.status(400).status({ errorMessage: passwordMessage });
-
-       await bcrypt.hash(newPassword, 10, async (err, hash) => {
-        try {
-           await User.findByIdAndUpdate(userId, { password: hash }, (err) => {
-            if (err) {
-              const error = {
-                'details': [
-                  {
-                    'message': "Echec lors de la modification !"
-                  }
-                ]
-              };
-              res.status(400).send({ errorMessage: error });
-            } else {
-              res.status(200).send({ success: true, message: 'Mot-de-passe modifié' });
-            }
-          });
-        } catch {
-          res.status(400).send(err);
-        }
-      });
-
     });
 })
 
