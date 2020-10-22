@@ -12,6 +12,9 @@ const UserSchema = mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 999,
+  },
+  avatar : {
+    contentType: String,
   }
 });
 

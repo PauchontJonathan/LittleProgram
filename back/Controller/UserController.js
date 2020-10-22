@@ -1,7 +1,8 @@
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { loginValidation, registerValidation, updateNicknameValidation, updatePasswordValidation } = require('../validation');
+const fs = require('fs');
+const { loginValidation, registerValidation, updateNicknameValidation, updatePasswordValidation, updateAvatarValidation } = require('../validation');
 const { getIdFromToken } = require('../functions/functions');
 
 
@@ -187,10 +188,49 @@ const { getIdFromToken } = require('../functions/functions');
     });
   }
 
+  const getAvatar = async (req, res) => {
+    const { token } = req.body;
+    console.log(token);
+    const { file } = req;
+    console.log(file);
+    if (!file) return res.status(400).send('Le fichier est non existant');
+    const fileType = file.mimetype.split("/")[1];
+    const newFileName = file.filename + "." + fileType;
+    fs.rename(
+      `./public/avatar/${file.filename}`,
+      `./public/avatar/${newFileName}`,
+       async (err) => {
+        if (err) throw err;
+    
+        const userId = getIdFromToken(token);
+    
+        await User.findByIdAndUpdate(userId, { avatar: newFileName }, { new: true }, async (err) => {
+          if (err) {
+            const error = {
+              'details': [
+                {
+                  'message': 'Echec lors de la modification !'
+                }
+              ]
+            };
+            res.status(400).send({ errorMessage: error });
+          } else {
+            const user = await User.findById(userId);
+            const { avatar } = user;
+            res.status(200).send({ avatar });
+          }
+        });
+      }
+    );
+
+  };
+
+
 module.exports = {
   getLogin:getLogin,
   getRegister:getRegister,
   getNickname:getNickname,
   updatePassword:updatePassword,
-  updateNickname:updateNickname
+  updateNickname:updateNickname,
+  getAvatar:getAvatar,
 };

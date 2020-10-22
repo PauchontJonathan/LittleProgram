@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const api = "/api/v1/";
 
+
 //Connection to DB
 mongoose.connect(
   process.env.DB_CONNECT,
@@ -16,9 +17,8 @@ mongoose.connect(
     }
 });
 mongoose.set('useFindAndModify', false);
-
-app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
@@ -30,9 +30,10 @@ app.use((req, res, next) => {
 // Import Routes
 const usersRoute = require('./routes/users');
 
+app.use("/static", express.static('public/avatar'));
+
 //Middlewares
 app.use(`${api}users`, usersRoute)
-
 
 //Listening to port 8000
 app.listen(8000);
