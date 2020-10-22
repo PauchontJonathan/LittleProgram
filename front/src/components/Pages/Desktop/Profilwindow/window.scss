@@ -19,9 +19,29 @@
     padding: 1rem;
     &-avatar {
       align-self: center;
-      width: 3em !important;
-      height: 3em !important;
+      width: 3.5em !important;
+      height: 3.5em !important;
       margin-bottom: 2rem;
+      cursor: pointer;
+      &-form {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        margin-bottom: 1rem;
+      }
+      &-update {
+        margin-bottom: 1rem;
+      }
+      &-validate {
+        border: none;
+        text-transform: uppercase;
+        font-size: 1rem;
+        cursor: pointer;
+        &:hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
     }
     &-title {
       align-self: flex-start;

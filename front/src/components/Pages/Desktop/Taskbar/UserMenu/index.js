@@ -20,9 +20,7 @@ const UserMenu = () => {
     const { token } = state;
     axios.post('http://localhost:8000/api/v1/users/user', { token })
       .then((res) => {
-        console.log(res);
         const { nickname } = res.data;
-        console.log(nickname);
         dispatch(setNickname(nickname));
       });
     windowDispatch(handleProfilWindow());

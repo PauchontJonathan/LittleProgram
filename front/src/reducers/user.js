@@ -6,11 +6,15 @@ export const UserContext = createContext();
 const userInitialState = {
   nickname: null,
   token: null,
+  file: null,
+  avatar: '',
 };
 
 const LOGOUT = 'LOGOUT';
 const GET_TOKEN = 'GET_TOKEN';
 const SET_NICKNAME= 'SET_NICKNAME';
+const SET_FILE = 'SET_FILE';
+const SET_AVATAR = 'SET_AVATAR';
 
 // eslint-disable-next-line import/prefer-default-export
 export const addTokenToState = (currentToken) => ({
@@ -27,6 +31,15 @@ export const setNickname = (currentNickname) => ({
   currentNickname,
 });
 
+export const setFile = (currentFile) => ({
+  type: SET_FILE,
+  currentFile,
+});
+
+export const setAvatar = (currentAvatar) => ({
+  type: SET_AVATAR,
+  currentAvatar,
+});
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -40,8 +53,12 @@ const userReducer = (state, action) => {
       const tokenState = localStorage.getItem('token');
       return { ...state, token: tokenState, nickname: null };
     }
-    case SET_NICKNAME: 
-      return { ...state, nickname: action.currentNickname }
+    case SET_NICKNAME:
+      return { ...state, nickname: action.currentNickname };
+    case SET_FILE:
+      return { ...state, file: action.currentFile };
+    case SET_AVATAR:
+      return { ...state, avatar: action.currentAvatar };
     default:
       return state;
   }

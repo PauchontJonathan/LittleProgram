@@ -5,7 +5,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
-import { UserContext, setNickname } from 'src/reducers/user';
+import { UserContext, setNickname, setFile, setAvatar } from 'src/reducers/user';
 import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword, closeNicknameUpdate, closePasswordUpdate } from 'src/reducers/desktop';
 import './window.scss';
 
@@ -14,7 +14,7 @@ const ProfilWindow = () => {
   const [ userState, userDispatch ] = useContext(UserContext);
   const [ state, dispatch ] = useContext(DesktopContext);
   const { isReduceProfil, isUpdateNickname, isUpdatePassword } = state;
-  const { nickname, token } = userState;
+  const { nickname, token, file, avatar } = userState;
   const [ newNickname, setNewNickname ] = useState('');
   const [ isErrorMessageNickname, setIsErrorMessageNickname] = useState(false);
   const [ nicknameError, setNicknameError ] = useState('');
@@ -26,6 +26,7 @@ const ProfilWindow = () => {
   const [ isSuccessPassword, setIsSuccessPassword ] = useState(false);
   const [ successMessagePassword, setSuccessMessagePassword ] = useState('');
   const [ isReloadComponent, setIsReloadComponent ] = useState(false);
+  const [ isOpenUpdateAvatar, setIsOpenUpdateAvatar ] = useState(false);
 
   useEffect(() => {
     axios.post('http://localhost:8000/api/v1/users/user', { token })
@@ -77,6 +78,31 @@ const ProfilWindow = () => {
     setIsErrorMessagePassword(false);
     setSuccessMessagePassword('');
     setIsSuccessPassword(false);
+  };
+  
+  const handleAvatarForm = () => {
+    setIsOpenUpdateAvatar(!isOpenUpdateAvatar);
+  };
+  
+  const handleFileAvatar = (evt) => {
+    const avatarFiles = evt.target.files[0];
+    userDispatch(setFile(avatarFiles));
+  };
+
+  const handleAvatarSubmit = (evt) => {
+    evt.preventDefault();
+    const dataAvatar = new FormData();
+    dataAvatar.append('token', token);
+    dataAvatar.append('avatar', file);
+    axios.post('http://localhost:8000/api/v1/users/user/upload/avatar', dataAvatar)
+      .then((res) => {
+        console.log(res.data);
+        const newAvatar = res.data.avatar;
+        userDispatch(setAvatar(newAvatar));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   };
 
   const handleNicknameSubmit = (evt) => {
@@ -136,7 +162,19 @@ const ProfilWindow = () => {
           </div>
         </div>
         <div className="desktop-window-container">
-          <Avatar className="desktop-window-container-avatar"/>
+          { avatar === '' && (
+            <Avatar
+              className="desktop-window-container-avatar"
+              onClick={handleAvatarForm}
+            />
+          )}
+          { avatar != '' &&  <Avatar className="desktop-window-container-avatar" src={`http://localhost:8000/static/${avatar}`} onClick={handleAvatarForm}/> }
+          { isOpenUpdateAvatar && (
+            <form method="post" className="desktop-window-container-avatar-form" onSubmit={ handleAvatarSubmit }>
+              <input name="avatar" className="desktop-window-container-avatar-update" encType="multipart/form-data" type="file" accept="image/png, image/jpeg" onChange={handleFileAvatar} />
+              <input className="desktop-window-container-avatar-validate" type="submit" value="Valider" />
+            </form>
+          ) }
           <h1 className="desktop-window-container-title">Mes informations</h1>
           { !isUpdateNickname && (
             <>
