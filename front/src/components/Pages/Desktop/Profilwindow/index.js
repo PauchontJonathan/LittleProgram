@@ -7,7 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import { UserContext, setUserInfos, setFile, setAvatar } from 'src/reducers/user';
 import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword, closeNicknameUpdate, closePasswordUpdate } from 'src/reducers/desktop';
-import './window.scss';
+
+import './profilWindow.scss';
 
 const ProfilWindow = () => {
 
@@ -150,63 +151,63 @@ const ProfilWindow = () => {
       });
   };
 
-  const hidden = classNames('desktop-window', { 'desktop-window-hidden': isReduceProfil });
+  const hidden = classNames('window', { 'window-hidden': isReduceProfil });
 
   return (
     <Draggable>
       <div className={hidden}>
-        <div className="desktop-window-description">
-          <h1 className="desktop-window-description-title">Panneau de profil</h1>
-          <div className="desktop-window-description-icons">
-            <RemoveIcon onClick ={handleReduceProfil} className="desktop-window-description-icons-icon" />
-            <CloseIcon onClick={handleProfil} className="desktop-window-description-icons-icon" />
+        <div className="window-description">
+          <h1 className="window-description-title">Panneau de profil</h1>
+          <div className="window-description-icons">
+            <RemoveIcon onClick ={handleReduceProfil} className="window-description-icons-icon" />
+            <CloseIcon onClick={handleProfil} className="window-description-icons-icon" />
           </div>
         </div>
-        <div className="desktop-window-container">
+        <div className="window-container">
           { avatar === '' && (
             <Avatar
-              className="desktop-window-container-avatar"
+              className="window-container-avatar"
               onClick={handleAvatarForm}
             />
           )}
-          { avatar != '' &&  <Avatar className="desktop-window-container-avatar" src={`http://localhost:8000/static/${avatar}`} onClick={handleAvatarForm}/> }
+          { avatar != '' &&  <Avatar className="window-container-avatar" src={`http://localhost:8000/static/${avatar}`} onClick={handleAvatarForm}/> }
           { isOpenUpdateAvatar && (
-            <form method="post" className="desktop-window-container-avatar-form" onSubmit={ handleAvatarSubmit }>
-              <input name="avatar" className="desktop-window-container-avatar-update" encType="multipart/form-data" type="file" accept="image/png, image/jpeg" onChange={handleFileAvatar} />
-              <input className="desktop-window-container-avatar-validate" type="submit" value="Valider" />
+            <form method="post" className="window-container-avatar-form" onSubmit={ handleAvatarSubmit }>
+              <input name="avatar" className="window-container-avatar-update" encType="multipart/form-data" type="file" accept="image/png, image/jpeg" onChange={handleFileAvatar} />
+              <input className="window-container-avatar-validate" type="submit" value="Valider" />
             </form>
           ) }
-          <h1 className="desktop-window-container-title">Mes informations</h1>
+          <h1 className="window-container-title">Mes informations</h1>
           { !isUpdateNickname && (
             <>
-              <div className="desktop-window-container-infos">
-                <p className="desktop-window-container-infos-nickname">Pseudo: {nickname}</p>
-                <input className="desktop-window-container-infos-update" type="button" value="Modifier" onClick={handleFormNickname} />
+              <div className="window-container-infos">
+                <p className="window-container-infos-nickname">Pseudo: {nickname}</p>
+                <input className="window-container-infos-update" type="button" value="Modifier" onClick={handleFormNickname} />
               </div>
             </>
           )}
           { isUpdateNickname && (
-            <form method="post" className="desktop-window-container-infos" onSubmit={ handleNicknameSubmit }>
-              <input type="text" className="desktop-window-container-infos-input" name="nickname" placeholder="pseudo" value={newNickname} onChange={handleNewNickname} />
-              <input className="desktop-window-container-infos-close" type="button" value="retour" onClick={closeNicknameForm} />
-              <input type="submit" className="desktop-window-container-infos-update" value="Valider"/>
-              { isErrorMessageNickname && <p className="desktop-window-container-infos-error">{nicknameError}</p> }
-              { isSuccessNickname && <p className="desktop-window-container-infos-success">{successMessageNickname}</p> }
+            <form method="post" className="window-container-infos" onSubmit={ handleNicknameSubmit }>
+              <input type="text" className="window-container-infos-input" name="nickname" placeholder="pseudo" value={newNickname} onChange={handleNewNickname} />
+              <input className="window-container-infos-close" type="button" value="retour" onClick={closeNicknameForm} />
+              <input type="submit" className="window-container-infos-update" value="Valider"/>
+              { isErrorMessageNickname && <p className="window-container-infos-error">{nicknameError}</p> }
+              { isSuccessNickname && <p className="window-container-infos-success">{successMessageNickname}</p> }
             </form>
           )}
           { !isUpdatePassword && (
-            <div className="desktop-window-container-infos">
-              <p className="desktop-window-container-infos-password">Mot-de-passe: *********</p>
-              <input className="desktop-window-container-infos-update" type="button" value="Modifier" onClick={handleFormPassword} />
+            <div className="window-container-infos">
+              <p className="window-container-infos-password">Mot-de-passe: *********</p>
+              <input className="window-container-infos-update" type="button" value="Modifier" onClick={handleFormPassword} />
             </div>
           )}
           { isUpdatePassword && (
-            <form method="post" className="desktop-window-container-infos" onSubmit={ handlePasswordSubmit }>
-              <input type="password" className="desktop-window-container-infos-input" name="password" placeholder="mot-de-passe" value={newPassword} onChange={handleNewPassword} />
-              <input className="desktop-window-container-infos-close" type="button" value="retour" onClick={closePasswordForm} />
-              <input type="submit" className="desktop-window-container-infos-update" value="Valider"/>
-              { isErrorMessagePassword && <p className="desktop-window-container-infos-error">{passwordError}</p> }
-              { isSuccessPassword && <p className="desktop-window-container-infos-success">{successMessagePassword}</p> }
+            <form method="post" className="window-container-infos" onSubmit={ handlePasswordSubmit }>
+              <input type="password" className="window-container-infos-input" name="password" placeholder="mot-de-passe" value={newPassword} onChange={handleNewPassword} />
+              <input className="window-container-infos-close" type="button" value="retour" onClick={closePasswordForm} />
+              <input type="submit" className="window-container-infos-update" value="Valider"/>
+              { isErrorMessagePassword && <p className="window-container-infos-error">{passwordError}</p> }
+              { isSuccessPassword && <p className="window-container-infos-success">{successMessagePassword}</p> }
             </form>
           )}
         </div>

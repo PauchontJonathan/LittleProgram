@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import Particles from 'react-particles-js';
 import Taskbar from 'src/components/Pages/Desktop/Taskbar';
 import ProfilWindow from 'src/components/Pages/Desktop/ProfilWindow';
+import Applications from 'src/components/Pages/Desktop/Applications';
 import { DesktopContext } from 'src/reducers/desktop';
 import './desktop.scss';
 
 const Desktop = () => {
-  const [windowState, windowDispatch ] = useContext(DesktopContext);
-  const  { isOpenProfilWindow } = windowState;
+  const [desktopState, desktopDispatch ] = useContext(DesktopContext);
+  const  { isOpenProfilWindow, isOpenApplications } = desktopState;
   return (
     <>
       <Particles
@@ -75,6 +76,7 @@ const Desktop = () => {
         }}
       />
       {isOpenProfilWindow && <ProfilWindow />}
+      {isOpenApplications && <Applications />}
       <Taskbar />
     </>
   );

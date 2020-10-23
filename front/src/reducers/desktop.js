@@ -4,6 +4,8 @@ import React, { useReducer, createContext } from 'react';
 export const DesktopContext = createContext();
 
 const desktopInitialState = {
+  isOpenApplications: false,
+  isReduceApplications: false,
   isOpenProfilWindow: false,
   isOpenMenu: false,
   isReduceProfil: false,
@@ -15,6 +17,9 @@ const HANDLE_MENU = 'HANDLE_MENU';
 const CLOSE_MENU = 'CLOSE_MENU';
 const HANDLE_PROFIL_WINDOW = 'HANDLE_WINDOW';
 const REDUCE_PROFIL = 'REDUCE_PROFIL';
+const HANDLE_APPLICATIONS_WINDOW = 'HANDLE_APPLICATIONS_WINDOW';
+const REDUCE_APPLICATIONS = 'REDUCE_APPLICATIONS';
+const APPLICATIONS_REDUCER = 'APPLICATIONS_REDUCER';
 const CLOSE_PROFIL_REDUCER = 'CLOSE_PROFIL_REDUCER';
 const HANDLE_UPDATE_NICKNAME = 'HANDLE_UPDATE_NICKNAME';
 const CLOSE_NICKNAME_UPDATE = 'CLOSE_NICKNAME_FORM';
@@ -33,12 +38,24 @@ export const handleProfilWindow = () => ({
   type: HANDLE_PROFIL_WINDOW,
 });
 
+export const handleApplicationsWindow = () => ({
+  type: HANDLE_APPLICATIONS_WINDOW,
+});
+
 export const reduceProfil = () => ({
   type: REDUCE_PROFIL,
 });
 
+export const reduceApplications = () => ({
+  type: REDUCE_APPLICATIONS,
+});
+
 export const closeProfilReducer = () => ({
   type: CLOSE_PROFIL_REDUCER,
+});
+
+export const closeApplicationsReducer = () => ({
+  type: APPLICATIONS_REDUCER,
 });
 
 export const handleUpdateNickname = () => ({
@@ -65,10 +82,16 @@ const desktopReducer = (state, actions) => {
       return { ...state, isOpenMenu: false };
     case HANDLE_PROFIL_WINDOW:
       return { ...state, isOpenProfilWindow: !state.isOpenProfilWindow };
+    case HANDLE_APPLICATIONS_WINDOW:
+      return { ...state, isOpenApplications: !state.isOpenApplications };
     case REDUCE_PROFIL:
       return {...state, isReduceProfil: !state.isReduceProfil};
+    case REDUCE_APPLICATIONS:
+      return { ...state, isReduceApplications: !state.isReduceApplications };
     case CLOSE_PROFIL_REDUCER:
       return {...state, isReduceProfil: false};
+    case APPLICATIONS_REDUCER:
+      return { ...state, isReduceApplications: false};
     case HANDLE_UPDATE_NICKNAME:
       return {...state, isUpdateNickname: !state.isUpdateNickname};
     case HANDLE_UPDATE_PASSWORD:
