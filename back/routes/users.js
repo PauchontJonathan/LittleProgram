@@ -11,8 +11,9 @@ router.post('/register', UserController.getRegister)
 //Route for login one user
 router.post('/login', UserController.getLogin)
 
-//route to send nickname for the user
-router.post('/user', UserController.getNickname)
+//route to send user information to front
+router.post('/user', UserController.getUserInfos)
+
 //route for update the password
 router.put('/user/update/password', UserController.updatePassword)
 

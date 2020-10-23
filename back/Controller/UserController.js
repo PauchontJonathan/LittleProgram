@@ -87,7 +87,7 @@ const { getIdFromToken } = require('../functions/functions');
   });
   };
 
-  const getNickname = async (req, res) => {
+  const getUserInfos = async (req, res) => {
     const currentToken = req.body.token;
 
     const userId = getIdFromToken(currentToken);
@@ -101,8 +101,8 @@ const { getIdFromToken } = require('../functions/functions');
       ]
     };
     if(!user) return res.status(400).send({errorMessage: error })
-    const { nickname } = user;
-    res.status(200).send({ nickname });
+    const { nickname, avatar } = user;
+    res.status(200).send({ nickname, avatar });
     };
   
   const updatePassword = async (req, res) => {
@@ -229,7 +229,7 @@ const { getIdFromToken } = require('../functions/functions');
 module.exports = {
   getLogin:getLogin,
   getRegister:getRegister,
-  getNickname:getNickname,
+  getUserInfos:getUserInfos,
   updatePassword:updatePassword,
   updateNickname:updateNickname,
   getAvatar:getAvatar,
