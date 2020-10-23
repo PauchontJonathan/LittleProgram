@@ -5,7 +5,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
-import { UserContext, setNickname, setFile, setAvatar } from 'src/reducers/user';
+import { UserContext, setUserInfos, setFile, setAvatar } from 'src/reducers/user';
 import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword, closeNicknameUpdate, closePasswordUpdate } from 'src/reducers/desktop';
 import './window.scss';
 
@@ -32,7 +32,8 @@ const ProfilWindow = () => {
     axios.post('http://localhost:8000/api/v1/users/user', { token })
       .then((res) => {
         const currentNickname = res.data.nickname;
-        userDispatch(setNickname(currentNickname));
+        const currentAvatar = res.data.avatar;
+        userDispatch(setUserInfos(currentNickname, currentAvatar));
       });
   }, [isReloadComponent]);
 

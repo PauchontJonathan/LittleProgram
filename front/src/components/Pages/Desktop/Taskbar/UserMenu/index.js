@@ -3,7 +3,7 @@ import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { DesktopContext, handleProfilWindow, closeProfilReducer } from 'src/reducers/desktop';
-import { UserContext, logout, setNickname } from 'src/reducers/user';
+import { UserContext, logout, setUserInfos } from 'src/reducers/user';
 
 import './usermenu.scss';
 
@@ -20,8 +20,8 @@ const UserMenu = () => {
     const { token } = state;
     axios.post('http://localhost:8000/api/v1/users/user', { token })
       .then((res) => {
-        const { nickname } = res.data;
-        dispatch(setNickname(nickname));
+        const { nickname, avatar } = res.data;
+        dispatch(setUserInfos(nickname, avatar));
       });
     windowDispatch(handleProfilWindow());
     if (isReduceProfil === true) {

@@ -12,7 +12,7 @@ const userInitialState = {
 
 const LOGOUT = 'LOGOUT';
 const GET_TOKEN = 'GET_TOKEN';
-const SET_NICKNAME= 'SET_NICKNAME';
+const SET_USER_INFOS= 'SET_USER_INFOS';
 const SET_FILE = 'SET_FILE';
 const SET_AVATAR = 'SET_AVATAR';
 
@@ -26,9 +26,10 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const setNickname = (currentNickname) => ({
-  type: SET_NICKNAME,
+export const setUserInfos = (currentNickname, currentAvatar) => ({
+  type: SET_USER_INFOS,
   currentNickname,
+  currentAvatar,
 });
 
 export const setFile = (currentFile) => ({
@@ -53,8 +54,8 @@ const userReducer = (state, action) => {
       const tokenState = localStorage.getItem('token');
       return { ...state, token: tokenState, nickname: null };
     }
-    case SET_NICKNAME:
-      return { ...state, nickname: action.currentNickname };
+    case SET_USER_INFOS:
+      return { ...state, nickname: action.currentNickname, avatar: action.currentAvatar };
     case SET_FILE:
       return { ...state, file: action.currentFile };
     case SET_AVATAR:
