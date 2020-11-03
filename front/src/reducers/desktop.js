@@ -4,6 +4,8 @@ import React, { useReducer, createContext } from 'react';
 export const DesktopContext = createContext();
 
 const desktopInitialState = {
+  isActiveApplications: false,
+  isActiveProfil: false,
   isOpenApplications: false,
   isReduceApplications: false,
   isOpenProfilWindow: false,
@@ -25,6 +27,8 @@ const HANDLE_UPDATE_NICKNAME = 'HANDLE_UPDATE_NICKNAME';
 const CLOSE_NICKNAME_UPDATE = 'CLOSE_NICKNAME_FORM';
 const HANDLE_UPDATE_PASSWORD = 'HANDLE_UPDATE_PASSWORD';
 const CLOSE_PASSWORD_UPDATE = 'CLOSE_PASSWORD_FORM';
+const ACTIVE_APPLICATIONS = 'ACTIVE_APPLICATIONS';
+const ACTIVE_PROFIL = 'ACTIVE_PROFIL';
 
 export const handleMenu = () => ({
   type: HANDLE_MENU,
@@ -74,6 +78,14 @@ export const closePasswordUpdate = () => ({
   type: CLOSE_PASSWORD_UPDATE,
 });
 
+export const activeApplications = () => ({
+  type: ACTIVE_APPLICATIONS,
+});
+
+export const activeProfil = () => ({
+  type: ACTIVE_PROFIL,
+});
+
 const desktopReducer = (state, actions) => {
   switch (actions.type) {
     case HANDLE_MENU:
@@ -100,6 +112,10 @@ const desktopReducer = (state, actions) => {
       return {...state, isUpdateNickname: false };
     case CLOSE_PASSWORD_UPDATE:
       return {...state, isUpdatePassword: false };
+    case ACTIVE_APPLICATIONS:
+      return { ...state, isActiveApplications: true, isActiveProfil: false };
+    case ACTIVE_PROFIL:
+      return { ...state, isActiveProfil: true, isActiveApplications: false };
     default:
       return state;
   };

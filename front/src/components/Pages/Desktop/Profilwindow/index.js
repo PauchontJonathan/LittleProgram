@@ -6,7 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import { UserContext, setUserInfos, setFile, setAvatar } from 'src/reducers/user';
-import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword, closeNicknameUpdate, closePasswordUpdate } from 'src/reducers/desktop';
+import {DesktopContext, handleProfilWindow, reduceProfil, handleUpdateNickname, handleUpdatePassword, closeNicknameUpdate, closePasswordUpdate, activeProfil } from 'src/reducers/desktop';
 
 import './profilWindow.scss';
 
@@ -14,7 +14,7 @@ const ProfilWindow = () => {
 
   const [ userState, userDispatch ] = useContext(UserContext);
   const [ state, dispatch ] = useContext(DesktopContext);
-  const { isReduceProfil, isUpdateNickname, isUpdatePassword } = state;
+  const { isReduceProfil, isUpdateNickname, isUpdatePassword, isActiveProfil } = state;
   const { nickname, token, file, avatar } = userState;
   const [ newNickname, setNewNickname ] = useState('');
   const [ isErrorMessageNickname, setIsErrorMessageNickname] = useState(false);
@@ -91,6 +91,10 @@ const ProfilWindow = () => {
     userDispatch(setFile(avatarFiles));
   };
 
+  const handleActiveDisplay = () => {
+    dispatch(activeProfil());
+  };
+
   const handleAvatarSubmit = (evt) => {
     evt.preventDefault();
     const dataAvatar = new FormData();
@@ -98,7 +102,6 @@ const ProfilWindow = () => {
     dataAvatar.append('avatar', file);
     axios.post('http://localhost:8000/api/v1/users/user/upload/avatar', dataAvatar)
       .then((res) => {
-        console.log(res.data);
         const newAvatar = res.data.avatar;
         userDispatch(setAvatar(newAvatar));
       })
@@ -151,11 +154,11 @@ const ProfilWindow = () => {
       });
   };
 
-  const hidden = classNames('window', { 'window-hidden': isReduceProfil });
+  const handleDisplay = classNames('window', { 'window-hidden': isReduceProfil }, { 'window-active': isActiveProfil });
 
   return (
-    <Draggable>
-      <div className={hidden}>
+    <Draggable onStart={handleActiveDisplay}>
+      <div className={handleDisplay} onClick={handleActiveDisplay}>
         <div className="window-description">
           <h1 className="window-description-title">Panneau de profil</h1>
           <div className="window-description-icons">

@@ -3,7 +3,7 @@ import axios from 'axios';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import MenuIcon from '@material-ui/icons/Menu';
-import { DesktopContext, handleProfilWindow, closeProfilReducer, handleApplicationsWindow, closeApplicationsReducer } from 'src/reducers/desktop';
+import { DesktopContext, handleProfilWindow, closeProfilReducer, handleApplicationsWindow, closeApplicationsReducer, activeApplications, activeProfil } from 'src/reducers/desktop';
 import { UserContext, logout, setUserInfos } from 'src/reducers/user';
 
 import './usermenu.scss';
@@ -25,6 +25,7 @@ const UserMenu = () => {
         dispatch(setUserInfos(nickname, avatar));
       });
     desktopDispatch(handleProfilWindow());
+    desktopDispatch(activeProfil());
     if (isReduceProfil === true) {
       desktopDispatch(closeProfilReducer());
     }
@@ -32,6 +33,7 @@ const UserMenu = () => {
 
   const handleApplicationsWindowOnClick = () => {
     desktopDispatch(handleApplicationsWindow());
+    desktopDispatch(activeApplications());
     if (isReduceApplications === true) {
       desktopDispatch(closeApplicationsReducer());
     }

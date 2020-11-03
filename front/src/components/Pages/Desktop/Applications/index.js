@@ -3,14 +3,14 @@ import classNames from 'classnames';
 import Draggable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
-import { DesktopContext, handleApplicationsWindow, reduceApplications } from 'src/reducers/desktop';
+import { DesktopContext, handleApplicationsWindow, reduceApplications, activeApplications } from 'src/reducers/desktop';
 
 import './applications.scss';
 
 const Applications = () => {
 
   const [ desktopState, desktopDispatch ] = useContext(DesktopContext);
-  const { isReduceApplications } = desktopState;
+  const { isReduceApplications, isActiveApplications } = desktopState;
 
   const handleApplicationsWindowOnClick = () => {
     desktopDispatch(handleApplicationsWindow());
@@ -20,11 +20,15 @@ const Applications = () => {
     desktopDispatch(reduceApplications());
   };
 
-  const hidden = classNames('applications', { 'applications-hidden': isReduceApplications })
+  const handleActiveDisplay = () => {
+    desktopDispatch(activeApplications());
+  };
+
+  const handleDisplay = classNames('applications', { 'applications-hidden': isReduceApplications }, { 'applications-active': isActiveApplications });
 
   return (
-    <Draggable>
-      <div className={hidden}>
+    <Draggable onStart={handleActiveDisplay}>
+      <div className={handleDisplay} onClick={handleActiveDisplay}>
         <div className="window-description">
           <h1 className="window-description-title">Panneau d'applications</h1>
           <div className="window-description-icons">

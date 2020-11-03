@@ -1,6 +1,5 @@
 .window {
   position: fixed;
-  z-index: 1;
   left: 30%;
   top: 15%;
   min-width: 40rem;
@@ -10,6 +9,9 @@
   animation-duration: 0.1s;
   &-hidden {
     display: none;
+  }
+  &-active {
+    z-index: 1;
   }
   &-container {
     display: flex;
