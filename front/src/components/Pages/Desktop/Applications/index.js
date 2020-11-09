@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import Draggable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
+import SingleApp from 'src/components/Pages/Desktop/Applications/SingleApp';
 import { DesktopContext, handleApplicationsWindow, reduceApplications, activeApplications } from 'src/reducers/desktop';
 
 import './applications.scss';
@@ -36,6 +37,7 @@ const Applications = () => {
             <CloseIcon onClick={handleApplicationsWindowOnClick} className="window-description-icons-icon" />
           </div>
         </div>
+        <SingleApp />
       </div>
     </Draggable>
   )

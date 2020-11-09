@@ -1,5 +1,6 @@
 node_modules/
 dist/
+debug.log
 ../back/
 .vs/
 .vs-code/

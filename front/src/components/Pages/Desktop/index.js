@@ -3,6 +3,7 @@ import Particles from 'react-particles-js';
 import Taskbar from 'src/components/Pages/Desktop/Taskbar';
 import ProfilWindow from 'src/components/Pages/Desktop/ProfilWindow';
 import Applications from 'src/components/Pages/Desktop/Applications';
+import Calculator from 'src/components/Pages/Desktop/Calculator';
 import { DesktopContext } from 'src/reducers/desktop';
 import './desktop.scss';
 
@@ -77,6 +78,7 @@ const Desktop = () => {
       />
       {isOpenProfilWindow && <ProfilWindow />}
       {isOpenApplications && <Applications />}
+      <Calculator />
       <Taskbar />
     </>
   );

@@ -1,0 +1,78 @@
+.calculator {
+  position: fixed;
+  left: 30%;
+  top: 15%;
+  width: 30rem;
+  height: 43rem;
+  background: rgba(87, 86, 86, 0.8);
+  animation-name: heightUpDown;
+  animation-duration: 0.1s;
+  &-hidden {
+    display: none;
+  }
+  &-active {
+    z-index: 1;
+  }
+  &-previous {
+    margin: 1rem;
+    height: 2rem;
+    text-align: right;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 777;
+  }
+  &-current {
+    margin: 1rem;
+    height: 2rem;
+    text-align: right;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 777;
+  }
+  &-box {
+    display: flex;
+    flex-direction: row;
+    height: 75%;
+    padding: 1rem;
+    text-align: center;
+    color: #fff;
+    font-weight: 777;
+    background: rgb(54, 54, 54);
+  }
+  &-numbers {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-wrap: wrap;
+  }
+  &-number {
+    margin: 1rem;
+    padding: 0.5rem;
+    width: 20%;
+    height: 20%;
+    font-size: 4.5rem;
+    cursor: pointer;
+    &:hover {
+      background: rgba(255, 255, 255, 0.322);
+    }
+    &:active {
+      background: darken(rgba(255, 255, 255, 0.322), 30%);
+    }
+  }
+  &-symbols {
+    display: flex;
+    width: 20%;
+    flex-direction: column;
+  }
+  &-symbol {
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 3.3rem;
+    &:hover {
+      background: rgba(255, 255, 255, 0.322);
+    }
+    &:active {
+      background: darken(rgba(255, 255, 255, 0.322), 30%);
+    }
+  }
+}

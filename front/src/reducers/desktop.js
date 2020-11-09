@@ -6,7 +6,7 @@ export const DesktopContext = createContext();
 const desktopInitialState = {
   isActiveApplications: false,
   isActiveProfil: false,
-  isOpenApplications: false,
+  isOpenApplications: true,
   isReduceApplications: false,
   isOpenProfilWindow: false,
   isOpenMenu: false,
