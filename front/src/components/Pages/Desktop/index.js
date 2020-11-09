@@ -9,7 +9,7 @@ import './desktop.scss';
 
 const Desktop = () => {
   const [desktopState, desktopDispatch ] = useContext(DesktopContext);
-  const  { isOpenProfilWindow, isOpenApplications } = desktopState;
+  const  { isOpenProfilWindow, isOpenApplications, isOpenCalculator } = desktopState;
   return (
     <>
       <Particles
@@ -78,7 +78,7 @@ const Desktop = () => {
       />
       {isOpenProfilWindow && <ProfilWindow />}
       {isOpenApplications && <Applications />}
-      <Calculator />
+      { isOpenCalculator && <Calculator /> }
       <Taskbar />
     </>
   );

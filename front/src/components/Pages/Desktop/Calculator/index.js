@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import classNames from 'classnames';
 import Dragable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import calculatorDatas from 'src/datas/calculatorDatas';
+import { DesktopContext, closeCalculatorWindow, reduceCalculator, activeCalculator } from 'src/reducers/desktop';
 
 import './calculator.scss';
 
 const Calculator = () => {
+
+  const [ state, desktopDispatch ] = useContext(DesktopContext);
+  const { isReduceCalculator, isActiveCalculator } = state;
 
   const [ currentOperand, setCurrentOperand ] = useState('');
   const [ previousOperand, setPreviousOperand ] = useState('');
@@ -85,14 +90,28 @@ const Calculator = () => {
     setCurrentSymbol('');
   };
 
+  const closeCalculator = () => {
+    desktopDispatch(closeCalculatorWindow());
+  };
+
+  const handleReduceCalculator = () => {
+    desktopDispatch(reduceCalculator());
+  };
+
+  const handleActiveDisplay = () => {
+    desktopDispatch(activeCalculator());
+  };
+
+  const handleDisplay = classNames('calculator', { 'calculator-hidden': isReduceCalculator }, { 'calculator-active': isActiveCalculator });
+
   return (
-    <Dragable>
-      <div className="calculator">
+    <Dragable onStart={handleActiveDisplay}>
+      <div className={handleDisplay} onClick={handleActiveDisplay}>
         <div className="window-description">
           <h1 className="window-description-title">Calculatrice</h1>
           <div className="window-description-icons">
-            <RemoveIcon className="window-description-icons-icon" />
-            <CloseIcon className="window-description-icons-icon" />
+            <RemoveIcon onClick={handleReduceCalculator} className="window-description-icons-icon" />
+            <CloseIcon onClick={closeCalculator} className="window-description-icons-icon" />
           </div>
         </div>
         <div className="calculator-previous">{previousOperand + currentSymbol}</div>

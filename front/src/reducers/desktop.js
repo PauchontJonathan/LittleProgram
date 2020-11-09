@@ -4,9 +4,12 @@ import React, { useReducer, createContext } from 'react';
 export const DesktopContext = createContext();
 
 const desktopInitialState = {
+  isActiveCalculator: false,
   isActiveApplications: false,
   isActiveProfil: false,
-  isOpenApplications: true,
+  isOpenCalculator: false,
+  isReduceCalculator: false,
+  isOpenApplications: false,
   isReduceApplications: false,
   isOpenProfilWindow: false,
   isOpenMenu: false,
@@ -17,6 +20,9 @@ const desktopInitialState = {
 
 const HANDLE_MENU = 'HANDLE_MENU';
 const CLOSE_MENU = 'CLOSE_MENU';
+const HANDLE_CALCULATOR_WINDOW = 'HANDLE_CALCULATOR_WINDOW';
+const CLOSE_CALCULATOR_WINDOW = 'CLOSE_CALCULATOR_WINDOW';
+const REDUCE_CALCULATOR = 'REDUCE_CALCULATOR';
 const HANDLE_PROFIL_WINDOW = 'HANDLE_WINDOW';
 const REDUCE_PROFIL = 'REDUCE_PROFIL';
 const HANDLE_APPLICATIONS_WINDOW = 'HANDLE_APPLICATIONS_WINDOW';
@@ -27,6 +33,7 @@ const HANDLE_UPDATE_NICKNAME = 'HANDLE_UPDATE_NICKNAME';
 const CLOSE_NICKNAME_UPDATE = 'CLOSE_NICKNAME_FORM';
 const HANDLE_UPDATE_PASSWORD = 'HANDLE_UPDATE_PASSWORD';
 const CLOSE_PASSWORD_UPDATE = 'CLOSE_PASSWORD_FORM';
+const ACTIVE_CALCULATOR = 'ACTIVE_CALCULATOR';
 const ACTIVE_APPLICATIONS = 'ACTIVE_APPLICATIONS';
 const ACTIVE_PROFIL = 'ACTIVE_PROFIL';
 
@@ -36,6 +43,18 @@ export const handleMenu = () => ({
 
 export const cleanMenu = () => ({
   type: CLOSE_MENU,
+});
+
+export const closeCalculatorWindow = () => ({
+  type: CLOSE_CALCULATOR_WINDOW,
+});
+
+export const handleCalculatorWindow = () => ({
+  type: HANDLE_CALCULATOR_WINDOW,
+});
+
+export const reduceCalculator = () => ({
+  type: REDUCE_CALCULATOR,
 });
 
 export const handleProfilWindow = () => ({
@@ -78,6 +97,10 @@ export const closePasswordUpdate = () => ({
   type: CLOSE_PASSWORD_UPDATE,
 });
 
+export const activeCalculator = () => ({
+  type: ACTIVE_CALCULATOR,
+});
+
 export const activeApplications = () => ({
   type: ACTIVE_APPLICATIONS,
 });
@@ -92,10 +115,16 @@ const desktopReducer = (state, actions) => {
       return { ...state, isOpenMenu: !state.isOpenMenu };
     case CLOSE_MENU:
       return { ...state, isOpenMenu: false };
+    case CLOSE_CALCULATOR_WINDOW:
+      return { ...state, isOpenCalculator: false };
+    case HANDLE_CALCULATOR_WINDOW:
+      return { ...state, isOpenCalculator: true};
     case HANDLE_PROFIL_WINDOW:
       return { ...state, isOpenProfilWindow: !state.isOpenProfilWindow };
     case HANDLE_APPLICATIONS_WINDOW:
       return { ...state, isOpenApplications: !state.isOpenApplications };
+    case REDUCE_CALCULATOR:
+      return { ...state, isReduceCalculator: !state.isReduceCalculator };
     case REDUCE_PROFIL:
       return {...state, isReduceProfil: !state.isReduceProfil};
     case REDUCE_APPLICATIONS:
@@ -112,10 +141,12 @@ const desktopReducer = (state, actions) => {
       return {...state, isUpdateNickname: false };
     case CLOSE_PASSWORD_UPDATE:
       return {...state, isUpdatePassword: false };
+    case ACTIVE_CALCULATOR:
+      return { ...state, isActiveCalculator: true, isActiveProfil: false, isActiveApplications: false };
     case ACTIVE_APPLICATIONS:
-      return { ...state, isActiveApplications: true, isActiveProfil: false };
+      return { ...state, isActiveApplications: true, isActiveProfil: false, isActiveCalculator: false };
     case ACTIVE_PROFIL:
-      return { ...state, isActiveProfil: true, isActiveApplications: false };
+      return { ...state, isActiveProfil: true, isActiveApplications: false, isActiveCalculator: false };
     default:
       return state;
   };
