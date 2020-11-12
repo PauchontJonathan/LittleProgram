@@ -1,0 +1,71 @@
+.messenger {
+  width: 100%;
+  position: fixed;
+  left: 20%;
+  top: 10%;
+  z-index: 1;
+  width: 75rem;
+  height: 50rem;
+  animation-name: heightUpDown;
+  animation-duration: 0.1s;
+  display: block;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2A2A30), to(#3c3c44));
+  background: linear-gradient(#2A2A30, #3c3c44);
+  &:before {
+    content: '';
+    z-index:-1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url('https://cdn.discordapp.com/attachments/613995744109658122/776409132898058280/cerf.png');
+    background-position: bottom 0px right 355px;
+    background-repeat: no-repeat;
+    background-size: 105%;
+    height: 100%;
+    width: 100%;
+  }
+  &-hidden {
+    display: none;
+  }
+  &-active {
+    z-index: 2;
+  }
+  &-container {
+    display:flex;
+    flex-direction: column;
+    margin: 1rem;
+    padding: 1rem;
+    height: 80%;
+    &-avatar {
+      align-self: center;
+      width: 10rem !important;
+      height: 10rem !important;
+      margin-top: 5rem;
+    }
+    &-nickname {
+      align-self: center;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      font-weight: 777;
+      color: #fff;
+    }
+    &-connexion {
+      margin-top: 1rem;
+      border: none;
+      width: 20%;
+      align-self: center;
+      padding: 1rem;
+      background: #69404b;
+      text-transform: uppercase;
+      font-weight: 777;
+      font-size: 1rem;
+      color:#fff;
+      &:hover {
+        background: darken(#69404b, 5%);
+      }
+      &:active {
+        background: darken(#69404b, 10%);
+      }
+    }
+  }
+}

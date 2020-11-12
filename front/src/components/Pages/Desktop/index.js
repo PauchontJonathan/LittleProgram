@@ -4,12 +4,13 @@ import Taskbar from 'src/components/Pages/Desktop/Taskbar';
 import ProfilWindow from 'src/components/Pages/Desktop/ProfilWindow';
 import Applications from 'src/components/Pages/Desktop/Applications';
 import Calculator from 'src/components/Pages/Desktop/Calculator';
+import Messenger from 'src/components/Pages/Desktop/Messenger';
 import { DesktopContext } from 'src/reducers/desktop';
 import './desktop.scss';
 
 const Desktop = () => {
   const [desktopState, desktopDispatch ] = useContext(DesktopContext);
-  const  { isOpenProfilWindow, isOpenApplications, isOpenCalculator } = desktopState;
+  const  { isOpenProfilWindow, isOpenApplications, isOpenCalculator, isOpenMessenger } = desktopState;
   return (
     <>
       <Particles
@@ -29,7 +30,7 @@ const Desktop = () => {
               opacity: 0.5,
             },
             move: {
-              speed: 0.1,
+              speed: 0,
             },
             opacity: {
               anim: {
@@ -79,6 +80,7 @@ const Desktop = () => {
       {isOpenProfilWindow && <ProfilWindow />}
       {isOpenApplications && <Applications />}
       { isOpenCalculator && <Calculator /> }
+      {isOpenMessenger && <Messenger />}
       <Taskbar />
     </>
   );
