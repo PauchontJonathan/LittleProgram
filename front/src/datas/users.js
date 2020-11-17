@@ -19,6 +19,21 @@ const user = [
     nickname: 'Winnie',
     logged: true,
   },
+  {
+    id: 5,
+    nickname: 'Pilox',
+    logged: true,
+  },
+  {
+    id: 6,
+    nickname: 'Mamano',
+    logged: true,
+  },
+  {
+    id: 7,
+    nickname: 'Nebilim',
+    logged: true,
+  },
 ];
 
 export default user;
