@@ -8,7 +8,7 @@ const desktopInitialState = {
   isActiveCalculator: false,
   isActiveApplications: false,
   isActiveProfil: false,
-  isOpenMessenger: false,
+  isOpenMessenger: true,
   isOpenCalculator: false,
   isReduceMessenger: false,
   isReduceCalculator: false,
@@ -170,8 +170,8 @@ const desktopReducer = (state, actions) => {
       return {...state, isUpdateNickname: false };
     case CLOSE_PASSWORD_UPDATE:
       return {...state, isUpdatePassword: false };
-    case ACTIVE_MESSENGER:
-      return { ...state, isActiveMessenger: true, isActiveCalculator: false, isActiveApplications: false, isActiveProfil: false }
+    case ACTIVE_MESSENGER:  
+      return { ...state, isActiveMessenger: true, isActiveCalculator: false, isActiveApplications: false, isActiveProfil: false };
     case ACTIVE_CALCULATOR:
       return { ...state, isActiveCalculator: true, isActiveProfil: false, isActiveApplications: false, isActiveMessenger: false };
     case ACTIVE_APPLICATIONS:
@@ -184,7 +184,7 @@ const desktopReducer = (state, actions) => {
 };
 
 export const DesktopProvider = (props) => {
-  const [state, dispatch] = useReducer(desktopReducer, desktopInitialState )
+  const [state, dispatch] = useReducer(desktopReducer, desktopInitialState)
   const { children } = props;
   return (
     <DesktopContext.Provider value={ [state, dispatch] }>

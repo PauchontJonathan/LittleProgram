@@ -4,6 +4,7 @@ import { UserContext, addTokenToState } from 'src/reducers/user';
 import Forms from 'src/components/Pages/Forms';
 import Desktop from 'src/components/Pages/Desktop';
 import { DesktopProvider } from 'src/reducers/desktop';
+import { MessengerProvider } from 'src/reducers/messenger';
 import './pages.scss';
 
 const Pages = () => {
@@ -22,9 +23,11 @@ const Pages = () => {
         {currentToken ? <Redirect to="/desktop" /> : <Forms />}
       </Route>
       <DesktopProvider>
-        <Route exact path="/desktop">
-          {!currentToken ? <Redirect to="/" /> : <Desktop />}
-        </Route>
+        <MessengerProvider>
+          <Route exact path="/desktop">
+            {!currentToken ? <Redirect to="/" /> : <Desktop />}
+          </Route>
+        </MessengerProvider>
       </DesktopProvider>
     </div>
   );
