@@ -78,33 +78,44 @@ const Messenger = () => {
             </>
           )}
           { isLoggedUser && (
-            <div className="messenger-logged-container">
-              <div className="messenger-logged-users">
-                { users.map((user) => (
-                  <div className="messenger-logged-users-container" key={user.id}>
-                    <Avatar className="messenger-logged-users-container-avatar" />
-                    <div className="messenger-logged-users-container-connected"/>
-                    <p className="messenger-logged-users-container-nickname">{user.nickname}</p>
-                  </div>
-                )) }
-              </div>
-              <div className="messenger-logged-user">
-                <div className="messenger-logged-user-container">
-                  <Avatar className="messenger-logged-user-avatar" src={`http://localhost:8000/static/${avatar}`} onClick={handleClick}/>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={disconnectUser}>Logout</MenuItem>
-                  </Menu>
-                  <div className="messenger-logged-user-container-connected" />
+            <>
+              <div className="messenger-logged-container">
+                <div className="messenger-logged-users">
+                  { users.map((user) => (
+                    <div className="messenger-logged-users-container" key={user.id}>
+                      <Avatar className="messenger-logged-users-container-avatar" />
+                      <div className="messenger-logged-users-container-connected"/>
+                      <p className="messenger-logged-users-container-nickname">{user.nickname}</p>
+                    </div>
+                  )) }
                 </div>
-                <p className="messenger-logged-user-nickname">Lunastra</p>
+                <div className="messenger-logged-user">
+                  <div className="messenger-logged-user-container">
+                    <Avatar className="messenger-logged-user-avatar" src={`http://localhost:8000/static/${avatar}`} onClick={handleClick}/>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={disconnectUser}>Logout</MenuItem>
+                    </Menu>
+                    <div className="messenger-logged-user-container-connected" />
+                  </div>
+                  <p className="messenger-logged-user-nickname">Lunastra</p>
+                </div>
               </div>
-            </div>
+              <div className="messenger-logged-messagesBox">
+                <div className="messenger-logged-messagesBox-messages">
+                  <div className="messenger-logged-messagesBox-message">
+                    <Avatar />
+                    <p className="messenger-logged-messagesBox-content">Je suis un message</p>
+                  </div>
+                </div>
+                <input className="messenger-logged-messagesBox-input" type="text" placeholder="Envoyez un message" />
+              </div>
+            </>
           )}
         </div>
       </div>
