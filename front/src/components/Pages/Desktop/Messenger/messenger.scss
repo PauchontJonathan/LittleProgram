@@ -32,8 +32,13 @@
   }
   &-container {
     display:flex;
-    flex-direction: row ;
+    flex-direction: column ;
     height: 91%;
+    &-logged {
+      display:flex;
+      flex-direction: row ;
+      height: 91%;
+    }
     &-avatar {
       align-self: center;
       width: 10rem !important;

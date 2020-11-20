@@ -57,7 +57,8 @@ const Messenger = () => {
   };
 
   const handleDisplay = classNames('messenger', { 'messenger-hidden': isReduceMessenger }, { 'messenger-active': isActiveMessenger });
-  const handleDisplayOnLogin = classNames('messenger-logged', { 'messenger-logged-hidden': isReduceMessenger }, { 'messenger-logged-active': isActiveMessenger })
+  const handleDisplayOnLogin = classNames('messenger-logged', { 'messenger-logged-hidden': isReduceMessenger }, { 'messenger-logged-active': isActiveMessenger });
+  const handleDisplayFlexDirection = classNames('messenger-container', { 'messenger-container-logged': isLoggedUser });
 
   return (
     <Draggable onStart={handleActiveDisplay}>
@@ -69,7 +70,7 @@ const Messenger = () => {
             <CloseIcon onClick={closeMessenger} className="window-description-icons-icon" />
           </div>
         </div>
-        <div className="messenger-container">
+        <div className={handleDisplayFlexDirection}>
           { !isLoggedUser && (
             <>
               <Avatar className="messenger-container-avatar" src={`http://localhost:8000/static/${avatar}`} />
