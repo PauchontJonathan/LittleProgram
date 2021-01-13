@@ -190,9 +190,7 @@ const { getIdFromToken } = require('../functions/functions');
 
   const getAvatar = async (req, res) => {
     const { token } = req.body;
-    console.log(token);
     const { file } = req;
-    console.log(file);
     if (!file) return res.status(400).send('Le fichier est non existant');
     const fileType = file.mimetype.split("/")[1];
     const newFileName = file.filename + "." + fileType;

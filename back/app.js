@@ -28,11 +28,13 @@ app.use((req, res, next) => {
 });
 
 // Import Routes
+const messagesRoute = require('./routes/messages');
 const usersRoute = require('./routes/users');
 
 app.use("/static", express.static('public/avatar'));
 
 //Middlewares
+app.use(`${api}messages`, messagesRoute)
 app.use(`${api}users`, usersRoute)
 
 //Listening to port 8000
