@@ -2,37 +2,42 @@ const user = [
   {
     id: 1,
     nickname: 'Popilo',
-    logged: true,
+    isLoggedUser: true,
   },
   {
     id: 2,
     nickname: 'Nazebrock',
-    logged: true,
+    isLoggedUser: true,
   },
   {
     id: 3,
     nickname: 'Naxa',
-    logged: false,
+    isLoggedUser: false,
   },
   {
     id: 4,
     nickname: 'Winnie',
-    logged: true,
+    isLoggedUser: true,
   },
   {
     id: 5,
     nickname: 'Pilox',
-    logged: true,
+    isLoggedUser: true,
   },
   {
     id: 6,
     nickname: 'Mamano',
-    logged: true,
+    isLoggedUser: true,
   },
   {
     id: 7,
     nickname: 'Nebilim',
-    logged: true,
+    isLoggedUser: true,
+  },
+  {
+    id: 7,
+    nickname: 'Kirimtor',
+    isLoggedUser: true,
   },
 ];
 

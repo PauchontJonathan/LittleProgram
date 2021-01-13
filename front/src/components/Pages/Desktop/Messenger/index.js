@@ -10,6 +10,8 @@ import { UserContext } from 'src/reducers/user';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import users from 'src/datas/users';
+import UserListMessenger from './UserListMessenger';
+import SingleRoom from './SingleRoom';
 
 import './messenger.scss';
 
@@ -83,11 +85,7 @@ const Messenger = () => {
               <div className="messenger-logged-container">
                 <div className="messenger-logged-users">
                   { users.map((user) => (
-                    <div className="messenger-logged-users-container" key={user.id}>
-                      <Avatar className="messenger-logged-users-container-avatar" />
-                      <div className="messenger-logged-users-container-connected"/>
-                      <p className="messenger-logged-users-container-nickname">{user.nickname}</p>
-                    </div>
+                    <UserListMessenger {...user} />
                   )) }
                 </div>
                 <div className="messenger-logged-user">
@@ -107,15 +105,10 @@ const Messenger = () => {
                   <p className="messenger-logged-user-nickname">Lunastra</p>
                 </div>
               </div>
-              <div className="messenger-logged-messagesBox">
-                <div className="messenger-logged-messagesBox-messages">
-                  <div className="messenger-logged-messagesBox-message">
-                    <Avatar />
-                    <p className="messenger-logged-messagesBox-content">Je suis un message</p>
-                  </div>
-                </div>
-                <input className="messenger-logged-messagesBox-input" type="text" placeholder="Envoyez un message" />
+              <div className="messenger-logged-links">
+                <a className="messenger-logged-links-single">Mes salles</a>
               </div>
+              <SingleRoom />
             </>
           )}
         </div>
