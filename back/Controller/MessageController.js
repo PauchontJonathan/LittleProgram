@@ -27,8 +27,17 @@ const setMessage = async (req, res) => {
   res.status(200).send({ success: true, message: 'Message envoyé !' })
 }
 
+const getAllMessages = async (req, res) => {
+  
+  const allMessages  = await MessageModel.find().populate('user', '-password -_id')
+
+  res.status(200).send({ success:true, allMessages })
+
+}
+
 
 
 module.exports = {
-  setMessage:setMessage
+  setMessage:setMessage,
+  getAllMessages:getAllMessages
 }
