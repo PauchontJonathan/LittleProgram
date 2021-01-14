@@ -12,7 +12,9 @@ const openSession = async (req, res) => {
  
   newSession.save()
 
-  res.status(200).send({ success: true, message: 'Session lancée !' })
+  const { _id } = newSession
+
+  res.status(200).send({ _id, success: true, message: 'Session lancée !' })
 
 }
 
