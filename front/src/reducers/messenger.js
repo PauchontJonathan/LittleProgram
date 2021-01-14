@@ -4,6 +4,8 @@ import React, { useReducer, createContext } from 'react';
 export const MessengerContext = createContext();
 
 const messengerInitialState = {
+  isUserListLoad: false,
+  userList: [],
   isLoggedUser: false,
   isLoggedUserMessage: '',
   isSessionActive: false,
@@ -23,6 +25,8 @@ const SET_ISLOGGED_MESSAGE = 'SET_ISLOGGED_MESSAGE';
 const VERIFY_SESSION = 'VERIFY_SESSION';
 const SET_SESSION_ID = 'SET_SESSION_ID';
 const CLEAN_SESSION_ID = 'CLEAN_SESSION_ID';
+const GET_USER_LIST = 'GET_USER_LIST';
+const SET_USER_LIST_LOAD = 'SET_USER_LIST_LOAD';
 
 export const logUser = () => ({
   type: LOG_USER,
@@ -48,7 +52,7 @@ export const setIsMessageSend = () => ({
 
 export const clearMessageInput = () => ({
   type: CLEAR_MESSAGE_INPUT,
-})
+});
 
 export const setIsLoggedMessage = (currentMessage) => ({
   type: SET_ISLOGGED_MESSAGE,
@@ -66,8 +70,17 @@ export const setSessionId = (currentSessionIdValue) => ({
 
 export const cleanSessionId = () => ({
   type: CLEAN_SESSION_ID,
-})
- 
+});
+
+export const getUserList = (currentUserList) => ({
+  type: GET_USER_LIST,
+  currentUserList,
+});
+
+export const setUserListLoad = () => ({
+  type: SET_USER_LIST_LOAD,
+});
+
 const messengerReducer = (state, actions) => {
   switch (actions.type) {
     case LOG_USER:
@@ -90,6 +103,10 @@ const messengerReducer = (state, actions) => {
       return { ...state, currentSessionId: actions.currentSessionIdValue }
     case CLEAN_SESSION_ID:
       return { ...state, currentSessionId: null }
+    case GET_USER_LIST:
+      return { ...state, userList: actions.currentUserList }
+    case SET_USER_LIST_LOAD:
+      return { ...state, isUserListLoad: true }
     default:
       return state;
   }

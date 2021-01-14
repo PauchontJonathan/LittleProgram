@@ -1,20 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect, useContext } from 'react';
+import axios from 'axios';
+import { MessengerContext, getUserList, setUserListLoad } from 'src/reducers/messenger';
 import Avatar from '@material-ui/core/Avatar';
 
-const UserListMessenger = ({ id, nickname }) => {
+const UserListMessenger = () => {
+
+  const [ messengerState, messengerDispatch ] = useContext(MessengerContext);
+
+  const { userList, isUserListLoad } = messengerState;
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/v1/sessions/all')
+      .then((res) => {
+        const { sessions } = res.data;
+        messengerDispatch(getUserList(sessions))
+        messengerDispatch(setUserListLoad())
+      })
+  }, [])
+
   return (
-    <div className="messenger-logged-users-container" key={id}>
-      <Avatar className="messenger-logged-users-container-avatar" />
-      <div className="messenger-logged-users-container-connected"/>
-      <p className="messenger-logged-users-container-nickname">{nickname}</p>
-    </div>
+    <>
+      { isUserListLoad && userList.map((list) => (
+        <div className="messenger-logged-users-container" key={list._id}>
+          <Avatar className="messenger-logged-users-container-avatar" src={`http://localhost:8000/static/${list.user.avatar}`} />
+          <div className="messenger-logged-users-container-connected"/>
+          <p className="messenger-logged-users-container-nickname">{list.user.nickname}</p>
+        </div>
+      )) }
+    </>
   )
 }
 
 export default UserListMessenger;
-
-UserListMessenger.propTypes = {
-  id: PropTypes.number.isRequired,
-  nickname: PropTypes.string.isRequired,
-}

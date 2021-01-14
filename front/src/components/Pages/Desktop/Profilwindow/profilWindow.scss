@@ -146,10 +146,12 @@
   0% {
     height: 0rem;
     color: linear-gradient(rgba(255, 255, 255, 0.3), rgba(117, 116, 116, 0.3));
+    overflow: hidden;
   }
   100% {
     height: 40rem;
     color: linear-gradient(rgb(255, 255, 255), rgb(117, 116, 116));
+    overflow: hidden;
   }
 }
 @keyframes toDisplay {

@@ -10,7 +10,6 @@ import { MessengerContext, logUser, logOutUser, setIsLoggedMessage, verifySessio
 import { UserContext } from 'src/reducers/user';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import users from 'src/datas/users';
 import UserListMessenger from './UserListMessenger';
 import SingleRoom from './SingleRoom';
 
@@ -115,9 +114,7 @@ const Messenger = () => {
             <>
               <div className="messenger-logged-container">
                 <div className="messenger-logged-users">
-                  { users.map((user) => (
-                    <UserListMessenger {...user} />
-                  )) }
+                  <UserListMessenger />
                 </div>
                 <div className="messenger-logged-user">
                   <div className="messenger-logged-user-container">
@@ -137,7 +134,7 @@ const Messenger = () => {
                 </div>
               </div>
               <div className="messenger-logged-links">
-                <a className="messenger-logged-links-single">Mes salles</a>
+                <a className="messenger-logged-links-single">Général</a>
               </div>
               <SingleRoom />
             </>
