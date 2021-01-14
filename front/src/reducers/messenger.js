@@ -4,7 +4,10 @@ import React, { useReducer, createContext } from 'react';
 export const MessengerContext = createContext();
 
 const messengerInitialState = {
-  isLoggedUser: true,
+  isLoggedUser: false,
+  isLoggedUserMessage: '',
+  isSessionActive: false,
+  currentSessionId: null,
   messages: [],
   singleMessageValueInput: '',
   isMessageSend: false,
@@ -16,6 +19,10 @@ const GET_ALL_MESSAGES = 'GET_ALL_MESSAGES';
 const SET_MESSAGE_INPUT_VALUE = 'SET_MESSAGE_INPUT_VALUE';
 const MESSAGE_SENT = 'MESSAGE_SENT';
 const CLEAR_MESSAGE_INPUT = 'CLEAR_MESSAGE_INPUT';
+const SET_ISLOGGED_MESSAGE = 'SET_ISLOGGED_MESSAGE';
+const VERIFY_SESSION = 'VERIFY_SESSION';
+const SET_SESSION_ID = 'SET_SESSION_ID';
+const CLEAN_SESSION_ID = 'CLEAN_SESSION_ID';
 
 export const logUser = () => ({
   type: LOG_USER,
@@ -42,6 +49,24 @@ export const setIsMessageSend = () => ({
 export const clearMessageInput = () => ({
   type: CLEAR_MESSAGE_INPUT,
 })
+
+export const setIsLoggedMessage = (currentMessage) => ({
+  type: SET_ISLOGGED_MESSAGE,
+  currentMessage,
+});
+
+export const verifySession = () => ({
+  type: VERIFY_SESSION,
+});
+
+export const setSessionId = (currentSessionIdValue) => ({
+  type: SET_SESSION_ID,
+  currentSessionIdValue,
+});
+
+export const cleanSessionId = () => ({
+  type: CLEAN_SESSION_ID,
+})
  
 const messengerReducer = (state, actions) => {
   switch (actions.type) {
@@ -57,6 +82,14 @@ const messengerReducer = (state, actions) => {
       return { ...state, isMessageSend: !state.isMessageSend }
     case CLEAR_MESSAGE_INPUT:
       return { ...state, singleMessageValueInput: '' }
+    case SET_ISLOGGED_MESSAGE:
+      return { ...state, isLoggedUserMessage: actions.currentMessage }
+    case VERIFY_SESSION:
+      return { ...state, isSessionActive: !state.isSessionActive }
+    case SET_SESSION_ID:
+      return { ...state, currentSessionId: actions.currentSessionIdValue }
+    case CLEAN_SESSION_ID:
+      return { ...state, currentSessionId: null }
     default:
       return state;
   }

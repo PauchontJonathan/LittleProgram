@@ -70,6 +70,12 @@
         background: darken(#69404b, 10%);
       }
     }
+    &-session {
+      width: 20%;
+      align-self: center;
+      color: #fff;
+      margin-top: 1rem;
+    }
   }
   &-logged {
     width: 100%;

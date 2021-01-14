@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import classNames from 'classnames';
 import Draggable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import { DesktopContext, closeMessengerWindow, reduceMessenger, activeMessenger } from 'src/reducers/desktop';
-import { MessengerContext, logUser, logOutUser } from 'src/reducers/messenger';
+import { MessengerContext, logUser, logOutUser, setIsLoggedMessage, verifySession, setSessionId, cleanSessionId } from 'src/reducers/messenger';
 import { UserContext } from 'src/reducers/user';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -25,8 +26,21 @@ const Messenger = () => {
   const [ state, userDispatch ] = useContext(UserContext);
 
   const { isReduceMessenger, isActiveMessenger } = desktopState;
-  const { avatar, nickname } = state;
-  const { isLoggedUser } = messengerState;
+  const { avatar, nickname, token } = state;
+  const { isLoggedUser, isLoggedUserMessage, isSessionActive, currentSessionId } = messengerState;
+
+  useEffect(() => {
+    axios.post('http://localhost:8000/api/v1/sessions/verify', { token })
+      .then((res) => {
+        const { message, sessionId } = res.data;
+        messengerDispatch(setSessionId(sessionId));
+        messengerDispatch(setIsLoggedMessage(message));
+      })
+      .catch((err) => {
+        const { message } = err.response.data;
+        messengerDispatch(setIsLoggedMessage(message));
+      })
+  }, [isSessionActive])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,8 +59,13 @@ const Messenger = () => {
   };
 
   const disconnectUser = () => {
-    setAnchorEl(null);
-    messengerDispatch(logOutUser());
+    axios.post('http://localhost:8000/api/v1/sessions/disconnect', { sessionId: currentSessionId })
+      .then(() => {
+        messengerDispatch(verifySession());
+        setAnchorEl(null);
+        messengerDispatch(cleanSessionId());
+        messengerDispatch(logOutUser());
+      })
   };
 
   const closeMessenger =() => {
@@ -55,7 +74,18 @@ const Messenger = () => {
   };
 
   const connectUser = () => {
-    messengerDispatch(logUser())
+    if (!currentSessionId) {
+      axios.post('http://localhost:8000/api/v1/sessions/connect', { token })
+        .then((res) => {
+          const { _id } = res.data;
+          messengerDispatch(setSessionId(_id));
+          messengerDispatch(verifySession());
+          messengerDispatch(logUser())
+        })
+    } else if (currentSessionId) {
+      messengerDispatch(verifySession());
+      messengerDispatch(logUser())
+    }
   };
 
   const handleDisplay = classNames('messenger', { 'messenger-hidden': isReduceMessenger }, { 'messenger-active': isActiveMessenger });
@@ -77,7 +107,8 @@ const Messenger = () => {
             <>
               <Avatar className="messenger-container-avatar" src={`http://localhost:8000/static/${avatar}`} />
               <p className="messenger-container-nickname">{nickname}</p>
-              <button type="button" className="messenger-container-connexion" onClick={connectUser}>Se connecter</button>
+              <button type="button" className="messenger-container-connexion" onClick={connectUser}>{isLoggedUserMessage === 'Vous avez 1 session active' ? 'Rejoindre la session' : 'Se connecter'}</button>
+              <p className="messenger-container-session">{isLoggedUserMessage}</p>
             </>
           )}
           { isLoggedUser && (

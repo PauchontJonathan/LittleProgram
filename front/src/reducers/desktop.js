@@ -8,7 +8,7 @@ const desktopInitialState = {
   isActiveCalculator: false,
   isActiveApplications: false,
   isActiveProfil: false,
-  isOpenMessenger: true,
+  isOpenMessenger: false,
   isOpenCalculator: false,
   isReduceMessenger: false,
   isReduceCalculator: false,
