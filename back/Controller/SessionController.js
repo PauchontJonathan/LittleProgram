@@ -40,7 +40,6 @@ const closeSession = async (req, res) => {
 
 const getAllUserBySessions = async (req, res) => {
   const sessions = await SessionModel.find().populate('user', '-_id -password')
-  console.log(sessions);
   res.status(200).send({ sessions })
 }
 
