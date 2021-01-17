@@ -1,9 +1,17 @@
 const express = require('express');
 const app = express();
+const http = require('http').Server(app)
 const mongoose = require('mongoose');
 require('dotenv/config');
 const api = "/api/v1/";
-
+const io = require('socket.io')(http, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+})
+const handleSocketMessage = require('./socket/singleMessage')
+const handleSocketUser = require ('./socket/users')
 
 //Connection to DB
 mongoose.connect(
@@ -39,5 +47,26 @@ app.use(`${api}users`, usersRoute)
 app.use(`${api}messages`, messagesRoute)
 app.use(`${api}sessions`, sessionsRoute)
 
+
+//Socket
+io.on('connection', async (socket) => {
+  await socket.on('sendMessage', (userMessage) => {
+    handleSocketMessage.sendMessage(userMessage)
+    const { singleMessage } = handleSocketMessage
+    io.local.emit('getMessage', singleMessage)
+  })
+  await socket.on('setUser', async () => {
+    const connected = handleSocketUser.connectUser()
+    socket.broadcast.emit('loadIsConnectedUser', connected) 
+  })
+  await socket.on('unsetUser', async () => {
+    const connected = handleSocketUser.disconnectUser()
+    await socket.broadcast.emit('loadIsConnectedUser', connected)
+  })
+  await socket.on('unset', async () => {
+    await socket.disconnect()
+  })
+})
+
 //Listening to port 8000
-app.listen(8000);
+http.listen(8000);

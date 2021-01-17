@@ -77,7 +77,6 @@ const { getIdFromToken } = require('../functions/functions');
         nickname: newNickname,
         password: hash
       });
-      console.log(user);
         try {
           const savedUser = user.save();
           res.status(200).send({message: 'Vous êtes bien inscrit !'});
