@@ -1,21 +1,37 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import classNames from 'classnames';
 import Draggable from 'react-draggable';
 import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
-import { DesktopContext, closeMessengerWindow, reduceMessenger, activeMessenger } from 'src/reducers/desktop';
-import { MessengerContext, logUser, logOutUser, setIsLoggedMessage, verifySession, setSessionId, cleanSessionId } from 'src/reducers/messenger';
+import {
+  DesktopContext,
+  closeMessengerWindow,
+  reduceMessenger,
+  activeMessenger,
+} from 'src/reducers/desktop';
+import {
+  MessengerContext,
+  logUser,
+  logOutUser,
+  setIsLoggedMessage,
+  verifySession,
+  setSessionId,
+  cleanSessionId,
+  clearUserList,
+} from 'src/reducers/messenger';
 import { UserContext } from 'src/reducers/user';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import io from 'socket.io-client';
 import UserListMessenger from './UserListMessenger';
 import SingleRoom from './SingleRoom';
 
 import './messenger.scss';
 
 const Messenger = () => {
+  const ENDPOINT = 'http://localhost:8000';
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -27,6 +43,9 @@ const Messenger = () => {
   const { isReduceMessenger, isActiveMessenger } = desktopState;
   const { avatar, nickname, token } = state;
   const { isLoggedUser, isLoggedUserMessage, isSessionActive, currentSessionId } = messengerState;
+
+  
+  const socketRef = useRef();
 
   useEffect(() => {
     axios.post('http://localhost:8000/api/v1/sessions/verify', { token })
@@ -40,6 +59,16 @@ const Messenger = () => {
         messengerDispatch(setIsLoggedMessage(message));
       })
   }, [isSessionActive])
+
+  useEffect(() => {
+    socketRef.current = io(ENDPOINT);
+    return () => {
+      socketRef.current.emit('unset')
+      socketRef.current.off();
+      messengerDispatch(clearUserList())
+    }
+  }, [])
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,6 +87,7 @@ const Messenger = () => {
   };
 
   const disconnectUser = () => {
+    socketRef.current.emit('unsetUser');
     axios.post('http://localhost:8000/api/v1/sessions/disconnect', { sessionId: currentSessionId })
       .then(() => {
         messengerDispatch(verifySession());
@@ -73,6 +103,7 @@ const Messenger = () => {
   };
 
   const connectUser = () => {
+    socketRef.current.emit('setUser');
     if (!currentSessionId) {
       axios.post('http://localhost:8000/api/v1/sessions/connect', { token })
         .then((res) => {
@@ -114,7 +145,7 @@ const Messenger = () => {
             <>
               <div className="messenger-logged-container">
                 <div className="messenger-logged-users">
-                  <UserListMessenger />
+                  <UserListMessenger socketRef={socketRef} />
                 </div>
                 <div className="messenger-logged-user">
                   <div className="messenger-logged-user-container">
@@ -130,13 +161,13 @@ const Messenger = () => {
                     </Menu>
                     <div className="messenger-logged-user-container-connected" />
                   </div>
-                  <p className="messenger-logged-user-nickname">Lunastra</p>
+                  <p className="messenger-logged-user-nickname">{nickname}</p>
                 </div>
               </div>
               <div className="messenger-logged-links">
                 <a className="messenger-logged-links-single">Général</a>
               </div>
-              <SingleRoom />
+              <SingleRoom socketRef={socketRef} ENDPOINT={ENDPOINT} />
             </>
           )}
         </div>

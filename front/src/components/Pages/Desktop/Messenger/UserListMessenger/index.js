@@ -1,14 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
-import { MessengerContext, getUserList, setUserListLoad } from 'src/reducers/messenger';
+import { MessengerContext, getUserList, setUserListLoad, handleIsSocketConnectedUser } from 'src/reducers/messenger';
 import Avatar from '@material-ui/core/Avatar';
 
-const UserListMessenger = () => {
+const UserListMessenger = ({ socketRef }) => {
 
   const [ messengerState, messengerDispatch ] = useContext(MessengerContext);
 
-  const { userList, isUserListLoad } = messengerState;
+  const { userList, isUserListLoad, isSocketConnectedUser } = messengerState;
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/v1/sessions/all')
@@ -17,6 +17,12 @@ const UserListMessenger = () => {
         messengerDispatch(getUserList(sessions))
         messengerDispatch(setUserListLoad())
       })
+  }, [isSocketConnectedUser])
+
+  useEffect(() => {
+    socketRef.current.on('loadIsConnectedUser', (currentSocketConnectedUser) => {
+      messengerDispatch(handleIsSocketConnectedUser(currentSocketConnectedUser))
+    })
   }, [])
 
   return (

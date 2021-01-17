@@ -1,16 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import { MessengerContext, getAllMessages, setSingleMessage, setIsMessageSend, clearMessageInput } from 'src/reducers/messenger'
+import { MessengerContext, getAllMessages, setSingleMessage, setIsMessageSend, clearMessageInput, setSocketMessageToMessages } from 'src/reducers/messenger'
 import { UserContext } from 'src/reducers/user'
 import axios from 'axios'
 
-const SingleRoom = () => {
+const SingleRoom = ({ socketRef }) => {
+  
 
   const [ userState, userDispatch ] = useContext(UserContext);
   const [ messengerState, messengerDispatch ] = useContext(MessengerContext)
   const { messages, singleMessageValueInput, isMessageSend} = messengerState;
-  const { token } = userState;
+  const { token, avatar, nickname } = userState;
 
   useEffect(() => {
     const messagesClassElement = document.querySelector('.messenger-logged-messagesBox-messages');
@@ -18,9 +19,20 @@ const SingleRoom = () => {
       .then((res) => {
         const { allMessages } = res.data;
         messengerDispatch(getAllMessages(allMessages));
-        messagesClassElement.scrollTo(0, messagesClassElement.clientHeight)
+      })
+      .finally(() => {
+        messagesClassElement.scrollTo(0, messagesClassElement.scrollHeight)
       });
-  }, [isMessageSend])
+  }, [])
+
+
+  useEffect(() => {
+    socketRef.current.on('getMessage', (currentMessage) => {
+      messengerDispatch(setSocketMessageToMessages(currentMessage));
+      const messagesClassElement = document.querySelector('.messenger-logged-messagesBox-messages');
+      messagesClassElement.scrollTo(0, messagesClassElement.scrollHeight)
+    })
+  }, [])
 
   const handleMessageInputOnChange = (e) => {
     const { value } = e.target;
@@ -30,11 +42,18 @@ const SingleRoom = () => {
   const handleSendMessageSubmit = (e) => {
     e.preventDefault();
     if (singleMessageValueInput === '') return;
+    const singleMessage = {
+      message: singleMessageValueInput,
+      nickname,
+      avatar,
+    };
+    socketRef.current.emit('sendMessage', singleMessage);
+    messengerDispatch(setIsMessageSend());
     axios.post('http://localhost:8000/api/v1/messages/message', {token, message: singleMessageValueInput.trim()})
       .then(() => {
         messengerDispatch(setIsMessageSend());
         messengerDispatch(clearMessageInput());
-      })
+      });
   };
 
   return (

@@ -13,6 +13,7 @@ const messengerInitialState = {
   messages: [],
   singleMessageValueInput: '',
   isMessageSend: false,
+  isSocketConnectedUser: false,
 };
 
 const LOG_USER = 'LOG_USER';
@@ -27,6 +28,9 @@ const SET_SESSION_ID = 'SET_SESSION_ID';
 const CLEAN_SESSION_ID = 'CLEAN_SESSION_ID';
 const GET_USER_LIST = 'GET_USER_LIST';
 const SET_USER_LIST_LOAD = 'SET_USER_LIST_LOAD';
+const SET_SOCKET_MESSAGE_TO_MESSAGES = 'SET_SOCKET_MESSAGE_TO_MESSAGES';
+const HANDLE_IS_SOCKET_CONNECTED_USER = 'HANDLE_IS_SOCKET_CONNECTED_USER';
+const CLEAR_USERS_LIST = 'CLEAR_USERS_LIST';
 
 export const logUser = () => ({
   type: LOG_USER,
@@ -77,9 +81,23 @@ export const getUserList = (currentUserList) => ({
   currentUserList,
 });
 
+export const clearUserList = () => ({
+  type: CLEAR_USERS_LIST,
+})
+
 export const setUserListLoad = () => ({
   type: SET_USER_LIST_LOAD,
 });
+
+export const setSocketMessageToMessages = (socketMessage) => ({
+  type: SET_SOCKET_MESSAGE_TO_MESSAGES,
+  socketMessage,
+})
+
+export const handleIsSocketConnectedUser = (currentSocketConnectedUser) => ({
+  type: HANDLE_IS_SOCKET_CONNECTED_USER,
+  currentSocketConnectedUser,
+})
 
 const messengerReducer = (state, actions) => {
   switch (actions.type) {
@@ -105,8 +123,14 @@ const messengerReducer = (state, actions) => {
       return { ...state, currentSessionId: null }
     case GET_USER_LIST:
       return { ...state, userList: actions.currentUserList }
+    case CLEAR_USERS_LIST:
+      return { ...state, userList: [] }
     case SET_USER_LIST_LOAD:
       return { ...state, isUserListLoad: true }
+    case SET_SOCKET_MESSAGE_TO_MESSAGES:
+      return { ...state, messages: [...state.messages, actions.socketMessage] }
+    case HANDLE_IS_SOCKET_CONNECTED_USER:
+      return { ...state, isSocketConnectedUser: actions.currentSocketConnectedUser }
     default:
       return state;
   }
