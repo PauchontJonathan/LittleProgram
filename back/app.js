@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 });
 
 // Import Routes
+const roomRoute = require('./routes/room');
 const messagesRoute = require('./routes/messages');
 const sessionsRoute = require('./routes/sessions');
 const usersRoute = require('./routes/users');
@@ -46,25 +47,26 @@ app.use("/static", express.static('public/avatar'));
 app.use(`${api}users`, usersRoute)
 app.use(`${api}messages`, messagesRoute)
 app.use(`${api}sessions`, sessionsRoute)
+app.use(`${api}room`, roomRoute)
 
 
 //Socket
-io.on('connection', async (socket) => {
-  await socket.on('sendMessage', (userMessage) => {
+io.on('connection', (socket) => {
+   socket.on('sendMessage', (userMessage) => {
     handleSocketMessage.sendMessage(userMessage)
     const { singleMessage } = handleSocketMessage
     io.local.emit('getMessage', singleMessage)
   })
-  await socket.on('setUser', async () => {
+   socket.on('setUser', () => {
     const connected = handleSocketUser.connectUser()
     socket.broadcast.emit('loadIsConnectedUser', connected) 
   })
-  await socket.on('unsetUser', async () => {
+   socket.on('unsetUser', () => {
     const connected = handleSocketUser.disconnectUser()
-    await socket.broadcast.emit('loadIsConnectedUser', connected)
+     socket.broadcast.emit('loadIsConnectedUser', connected)
   })
-  await socket.on('unset', async () => {
-    await socket.disconnect()
+   socket.on('unset', () => {
+     socket.disconnect()
   })
 })
 
