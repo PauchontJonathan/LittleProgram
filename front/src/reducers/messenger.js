@@ -130,7 +130,7 @@ const messengerReducer = (state, actions) => {
     case SET_SOCKET_MESSAGE_TO_MESSAGES:
       return { ...state, messages: [...state.messages, actions.socketMessage] }
     case HANDLE_IS_SOCKET_CONNECTED_USER:
-      return { ...state, isSocketConnectedUser: actions.currentSocketConnectedUser }
+      return { ...state, isSocketConnectedUser: actions.currentSocketConnectedUser === state.isSocketConnectedUser ? !actions.currentSocketConnectedUser : actions.currentSocketConnectedUser}
     default:
       return state;
   }
